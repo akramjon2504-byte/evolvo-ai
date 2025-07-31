@@ -7,7 +7,7 @@ export function BlogSection() {
   const { language } = useLanguage();
 
   const { data: blogPosts, isLoading } = useQuery<{ success: boolean; data: BlogPost[] }>({
-    queryKey: ['/api/blog', language],
+    queryKey: [`/api/blog?lang=${language}`],
   });
 
   if (isLoading) {

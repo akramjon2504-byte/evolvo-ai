@@ -107,6 +107,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // RSS manual yuklash endpoint (admin)
+  app.post("/api/rss/sync", async (req, res) => {
+    try {
+      const { rssAutoPoster } = await import("./rss-auto-poster");
+      await rssAutoPoster.processRSSManually();
+      res.json({ success: true, message: "RSS yuklash muvaffaqiyatli tugallandi" });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "RSS yuklashda xatolik" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

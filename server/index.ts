@@ -37,6 +37,9 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // RSS avtomatik tizimini ishga tushirish
+  import("./rss-auto-poster");
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

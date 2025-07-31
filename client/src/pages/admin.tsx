@@ -19,6 +19,7 @@ export default function AdminPage() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("contacts");
   const [showBlogForm, setShowBlogForm] = useState(false);
+  const [isRSSLoading, setIsRSSLoading] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("admin_authenticated");
@@ -27,6 +28,26 @@ export default function AdminPage() {
       description: "Admin paneldan chiqildi"
     });
     setLocation("/");
+  };
+
+  const handleRSSSync = async () => {
+    setIsRSSLoading(true);
+    try {
+      const response = await apiRequest("/api/rss/sync", "POST");
+      toast({
+        title: "RSS Yuklandi",
+        description: "Yangi maqolalar avtomatik tarjima qilinib qo'shildi"
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/blog"] });
+    } catch (error) {
+      toast({
+        title: "Xatolik",
+        description: "RSS yuklashda xatolik yuz berdi",
+        variant: "destructive"
+      });
+    } finally {
+      setIsRSSLoading(false);
+    }
   };
 
   // Contacts data
@@ -201,13 +222,24 @@ export default function AdminPage() {
                     Blog maqolalarini boshqarish va nashr qilish
                   </CardDescription>
                 </div>
-                <Button 
-                  onClick={() => setShowBlogForm(true)}
-                  className="flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Yangi Maqola
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => setShowBlogForm(true)}
+                    className="flex items-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Yangi Maqola
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => handleRSSSync()}
+                    disabled={isRSSLoading}
+                    className="flex items-center gap-2"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    {isRSSLoading ? "RSS Yuklanmoqda..." : "RSS Yukla"}
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
                 {blogLoading ? (

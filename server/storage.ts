@@ -341,11 +341,10 @@ export class DatabaseStorage implements IStorage {
   async getBlogPosts(language?: string): Promise<BlogPost[]> {
     if (language) {
       return await db.select().from(blogPosts)
-        .where(and(eq(blogPosts.published, true), eq(blogPosts.language, language)))
+        .where(eq(blogPosts.language, language))
         .orderBy(desc(blogPosts.createdAt));
     } else {
       return await db.select().from(blogPosts)
-        .where(eq(blogPosts.published, true))
         .orderBy(desc(blogPosts.createdAt));
     }
   }

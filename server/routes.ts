@@ -65,6 +65,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Create blog post (admin)
+  app.post("/api/blog", async (req, res) => {
+    try {
+      const post = await storage.createBlogPost(req.body);
+      res.json({ success: true, data: post });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  });
+
   // Update blog post (admin)
   app.patch("/api/blog/:id", async (req, res) => {
     try {

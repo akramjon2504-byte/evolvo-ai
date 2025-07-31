@@ -8,13 +8,20 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import Home from "@/pages/home";
 import Admin from "@/pages/admin";
+import AdminLogin from "@/pages/admin-login";
 import NotFound from "@/pages/not-found";
+
+function ProtectedAdmin() {
+  const isAuthenticated = localStorage.getItem("admin_authenticated") === "true";
+  return isAuthenticated ? <Admin /> : <AdminLogin />;
+}
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/admin" component={Admin} />
+      <Route path="/admin" component={ProtectedAdmin} />
+      <Route path="/admin-login" component={AdminLogin} />
       <Route component={NotFound} />
     </Switch>
   );

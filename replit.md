@@ -40,6 +40,14 @@ The application uses a PostgreSQL database with the following main tables:
 
 All tables include UUID primary keys and timestamp tracking.
 
+### Admin Panel
+Comprehensive admin interface with authentication:
+- **Authentication**: Login system with demo credentials (admin/evolvo2025)
+- **Contact Management**: View and delete customer inquiries
+- **Blog Management**: Create, publish/unpublish, and manage blog posts
+- **Content Overview**: View services and testimonials
+- **Security**: Protected routes with localStorage-based auth
+
 ### API Structure
 RESTful API endpoints under `/api/`:
 - `POST /api/contact` - Contact form submission

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -9,12 +10,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { Trash2, Edit, Plus, Eye, EyeOff, Calendar, User, Mail, MessageSquare } from "lucide-react";
+import { Trash2, Edit, Plus, Eye, EyeOff, Calendar, User, Mail, MessageSquare, LogOut, Home } from "lucide-react";
+import { BlogForm } from "@/components/admin/blog-form";
 import type { Contact, BlogPost, Service, Testimonial } from "@shared/schema";
 
 export default function AdminPage() {
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("contacts");
+  const [showBlogForm, setShowBlogForm] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin_authenticated");
+    toast({
+      title: "Chiqish",
+      description: "Admin paneldan chiqildi"
+    });
+    setLocation("/");
+  };
 
   // Contacts data
   const { data: contacts, isLoading: contactsLoading } = useQuery({
@@ -62,11 +75,31 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Panel</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Evolvo AI platformasini boshqarish paneli
-          </p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Panel</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">
+              Evolvo AI platformasini boshqarish paneli
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button 
+              variant="outline" 
+              onClick={() => setLocation("/")}
+              className="flex items-center gap-2"
+            >
+              <Home className="w-4 h-4" />
+              Bosh sahifa
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleLogout}
+              className="flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              Chiqish
+            </Button>
+          </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -158,14 +191,23 @@ export default function AdminPage() {
           {/* Blog Tab */}
           <TabsContent value="blog">
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5" />
-                  Blog Maqolalari
-                </CardTitle>
-                <CardDescription>
-                  Blog maqolalarini boshqarish va nashr qilish
-                </CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageSquare className="w-5 h-5" />
+                    Blog Maqolalari
+                  </CardTitle>
+                  <CardDescription>
+                    Blog maqolalarini boshqarish va nashr qilish
+                  </CardDescription>
+                </div>
+                <Button 
+                  onClick={() => setShowBlogForm(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Yangi Maqola
+                </Button>
               </CardHeader>
               <CardContent>
                 {blogLoading ? (
@@ -352,6 +394,8 @@ export default function AdminPage() {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {showBlogForm && <BlogForm onClose={() => setShowBlogForm(false)} />}
     </div>
   );
 }

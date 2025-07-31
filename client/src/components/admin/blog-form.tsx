@@ -30,7 +30,7 @@ export function BlogForm({ onClose }: BlogFormProps) {
   });
 
   const createBlogMutation = useMutation({
-    mutationFn: (data: InsertBlogPost) => apiRequest("/api/blog", "POST", data),
+    mutationFn: (data: InsertBlogPost) => apiRequest("POST", "/api/blog", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/blog"] });
       toast({

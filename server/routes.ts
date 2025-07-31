@@ -68,10 +68,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create blog post (admin)
   app.post("/api/blog", async (req, res) => {
     try {
+      // Validate required fields
+      const { title, content, author, category, language } = req.body;
+      
+      if (!title || !content || !author || !category || !language) {
+        res.status(400).json({ 
+          success: false, 
+          error: "Barcha majburiy maydonlar to'ldirilishi kerak" 
+        });
+        return;
+      }
+
       const post = await storage.createBlogPost(req.body);
       res.json({ success: true, data: post });
     } catch (error) {
-      res.status(500).json({ success: false, error: "Internal server error" });
+      console.error('Blog post yaratishda xatolik:', error);
+      res.status(500).json({ success: false, error: "Maqola yaratishda xatolik yuz berdi" });
     }
   });
 

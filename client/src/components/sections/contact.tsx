@@ -55,7 +55,7 @@ export function ContactSection() {
   });
 
   const onSubmit = (data: InsertContact) => {
-    ContactMutation.mutate({ ...data, language });
+    contactMutation.mutate({ ...data, language });
   };
 
   return (
@@ -178,7 +178,8 @@ export function ContactSection() {
                             type="tel"
                             placeholder={t("contact.form.phonePlaceholder")}
                             className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-evolvo-blue focus:border-transparent"
-                            {...field} 
+                            {...field}
+                            value={field.value || ""}
                           />
                         </FormControl>
                         <FormMessage />
@@ -197,7 +198,8 @@ export function ContactSection() {
                           <Input 
                             placeholder={t("contact.form.companyPlaceholder")}
                             className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-evolvo-blue focus:border-transparent"
-                            {...field} 
+                            {...field}
+                            value={field.value || ""}
                           />
                         </FormControl>
                         <FormMessage />

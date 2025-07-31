@@ -90,6 +90,56 @@ export class MemStorage implements IStorage {
         color: "red-600",
         features: ["Xavfsizlik tahlili", "Tahdidlarni aniqlash", "Himoya tizimi"],
         language: "uz"
+      },
+      // Russian services
+      {
+        title: "AI-автоматизация",
+        description: "Автоматизируйте бизнес-процессы с помощью искусственного интеллекта и экономьте время.",
+        icon: "fas fa-robot",
+        color: "evolvo-blue",
+        features: ["Автоматизация процессов", "Экономия времени", "Снижение ошибок"],
+        language: "ru"
+      },
+      {
+        title: "Цифровая трансформация",
+        description: "Оснастите свой традиционный бизнес современной цифровой платформой.",
+        icon: "fas fa-digital-tachograph",
+        color: "evolvo-light-blue",
+        features: ["Цифровые решения", "Современные платформы", "Оптимизация бизнеса"],
+        language: "ru"
+      },
+      {
+        title: "Машинное обучение",
+        description: "ML-решения для получения ценных инсайтов из данных и прогнозирования.",
+        icon: "fas fa-brain",
+        color: "evolvo-success",
+        features: ["Прогнозные модели", "Анализ данных", "Получение инсайтов"],
+        language: "ru"
+      },
+      // English services
+      {
+        title: "AI Automation",
+        description: "Automate business processes with artificial intelligence and save time.",
+        icon: "fas fa-robot",
+        color: "evolvo-blue",
+        features: ["Process automation", "Time saving", "Error reduction"],
+        language: "en"
+      },
+      {
+        title: "Digital Transformation",
+        description: "Equip your traditional business with a modern digital platform.",
+        icon: "fas fa-digital-tachograph",
+        color: "evolvo-light-blue",
+        features: ["Digital solutions", "Modern platforms", "Business optimization"],
+        language: "en"
+      },
+      {
+        title: "Machine Learning",
+        description: "ML solutions for gaining valuable insights from data and forecasting.",
+        icon: "fas fa-brain",
+        color: "evolvo-success",
+        features: ["Predictive models", "Data analysis", "Insight extraction"],
+        language: "en"
       }
     ];
 
@@ -120,6 +170,40 @@ export class MemStorage implements IStorage {
         content: "Logistika optimizatsiyasi bizga millionlab so'm tejash imkonini berdi. Professional jamoa!",
         rating: "5",
         language: "uz"
+      },
+      // Russian testimonials
+      {
+        name: "Акмал Каримов",
+        position: "CEO",
+        company: "TechMart",
+        content: "Благодаря Evolvo AI наши торговые процессы полностью изменились. Теперь понимать и обслуживать клиентов намного легче.",
+        rating: "5",
+        language: "ru"
+      },
+      {
+        name: "Дильноза Рахимова",
+        position: "Директор",
+        company: "Digital Plus",
+        content: "После внедрения AI-чатбота удовлетворенность клиентов выросла до 90%. Отличное решение!",
+        rating: "5",
+        language: "ru"
+      },
+      // English testimonials
+      {
+        name: "Akmal Karimov",
+        position: "CEO",
+        company: "TechMart",
+        content: "With the help of Evolvo AI, our sales processes have completely changed. Understanding and serving customers is now much easier.",
+        rating: "5",
+        language: "en"
+      },
+      {
+        name: "Dilnoza Rahimova",
+        position: "Director",
+        company: "Digital Plus",
+        content: "After implementing the AI chatbot, customer satisfaction increased to 90%. Excellent solution!",
+        rating: "5",
+        language: "en"
       }
     ];
 
@@ -129,8 +213,9 @@ export class MemStorage implements IStorage {
     const blogPostsData: InsertBlogPost[] = [
       {
         title: "2025-yilda AI Texnologiyalarining Rivojlanish Tendensiyalari",
-        content: "Kelgusi yilda sun'iy intellekt sohasida kutilayotgan eng muhim o'zgarishlar va innovatsiyalar haqida batafsil ma'lumot...",
-        excerpt: "Kelgusi yilda sun'iy intellekt sohasida kutilayotgan eng muhim o'zgarishlar va innovatsiyalar haqida...",
+        content: "Kelgusi yilda sun'iy intellekt sohasida kutilayotgan eng muhim o'zgarishlar va innovatsiyalar haqida batafsil ma'lumot. AI texnologiyalari hozirgi kunda biznes jarayonlarini tubdan o'zgartirib, yangi imkoniyatlar yaratmoqda.",
+        excerpt: "Kelgusi yilda sun'iy intellekt sohasida kutilayotgan eng muhim o'zgarishlar va innovatsiyalar haqida",
+        image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         author: "Evolvo AI Team",
         category: "AI Trends",
         language: "uz",
@@ -138,8 +223,9 @@ export class MemStorage implements IStorage {
       },
       {
         title: "O'zbekistonda Biznes Raqamlashtiruv: Muvaffaqiyat Qoidalari",
-        content: "Mahalliy biznes uchun raqamli transformatsiyani muvaffaqiyatli amalga oshirish bo'yicha maslahatlar...",
-        excerpt: "Mahalliy biznes uchun raqamli transformatsiyani muvaffaqiyatli amalga oshirish bo'yicha maslahatlar...",
+        content: "Mahalliy biznes uchun raqamli transformatsiyani muvaffaqiyatli amalga oshirish bo'yicha maslahatlar. Zamonaviy texnologiyalar yordamida biznesingizni yangi bosqichga olib chiqing.",
+        excerpt: "Mahalliy biznes uchun raqamli transformatsiyani muvaffaqiyatli amalga oshirish bo'yicha maslahatlar",
+        image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         author: "Evolvo AI Team",
         category: "Digital Transformation",
         language: "uz",
@@ -147,11 +233,54 @@ export class MemStorage implements IStorage {
       },
       {
         title: "Machine Learning: Biznesda Qo'llash Imkoniyatlari",
-        content: "ML algoritmlari yordamida biznes jarayonlarini optimallashtirishning amaliy usullari...",
-        excerpt: "ML algoritmlari yordamida biznes jarayonlarini optimallashtirishning amaliy usullari...",
+        content: "ML algoritmlari yordamida biznes jarayonlarini optimallashtirishning amaliy usullari. Ma'lumotlardan qimmatli insight olish va bashorat qilish imkoniyatlari.",
+        excerpt: "ML algoritmlari yordamida biznes jarayonlarini optimallashtirishning amaliy usullari",
+        image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         author: "Evolvo AI Team",
         category: "Machine Learning",
         language: "uz",
+        published: true
+      },
+      // Russian posts
+      {
+        title: "Тенденции развития AI-технологий в 2025 году",
+        content: "Подробная информация о самых важных изменениях и инновациях, ожидаемых в сфере искусственного интеллекта в следующем году. AI-технологии сегодня кардинально меняют бизнес-процессы и создают новые возможности.",
+        excerpt: "Подробная информация о самых важных изменениях и инновациях в сфере искусственного интеллекта",
+        image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        author: "Evolvo AI Team",
+        category: "AI Trends",
+        language: "ru",
+        published: true
+      },
+      {
+        title: "Цифровизация бизнеса в Узбекистане: Правила успеха",
+        content: "Советы по успешному осуществлению цифровой трансформации для местного бизнеса. Выведите свой бизнес на новый уровень с помощью современных технологий.",
+        excerpt: "Советы по успешному осуществлению цифровой трансформации для местного бизнеса",
+        image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        author: "Evolvo AI Team",
+        category: "Digital Transformation",
+        language: "ru",
+        published: true
+      },
+      // English posts
+      {
+        title: "AI Technology Development Trends in 2025",
+        content: "Detailed information about the most important changes and innovations expected in the field of artificial intelligence next year. AI technologies are fundamentally changing business processes and creating new opportunities today.",
+        excerpt: "Detailed information about the most important changes and innovations expected in artificial intelligence",
+        image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        author: "Evolvo AI Team",
+        category: "AI Trends",
+        language: "en",
+        published: true
+      },
+      {
+        title: "Business Digitalization in Uzbekistan: Success Rules",
+        content: "Advice on successfully implementing digital transformation for local businesses. Take your business to the next level with modern technologies.",
+        excerpt: "Advice on successfully implementing digital transformation for local businesses",
+        image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        author: "Evolvo AI Team",
+        category: "Digital Transformation",
+        language: "en",
         published: true
       }
     ];
@@ -179,7 +308,10 @@ export class MemStorage implements IStorage {
   async createContact(insertContact: InsertContact): Promise<Contact> {
     const id = randomUUID();
     const contact: Contact = { 
-      ...insertContact, 
+      ...insertContact,
+      phone: insertContact.phone || null,
+      company: insertContact.company || null,
+      language: insertContact.language || null,
       id, 
       createdAt: new Date(),
       isRead: false 
@@ -221,7 +353,12 @@ export class MemStorage implements IStorage {
   async createBlogPost(insertPost: InsertBlogPost): Promise<BlogPost> {
     const id = randomUUID();
     const post: BlogPost = { 
-      ...insertPost, 
+      ...insertPost,
+      image: insertPost.image || null,
+      excerpt: insertPost.excerpt || null,
+      category: insertPost.category || null,
+      language: insertPost.language || null,
+      published: insertPost.published || null,
       id, 
       createdAt: new Date(),
       updatedAt: new Date()
@@ -237,7 +374,13 @@ export class MemStorage implements IStorage {
 
   async createService(insertService: InsertService): Promise<Service> {
     const id = randomUUID();
-    const service: Service = { ...insertService, id };
+    const service: Service = { 
+      ...insertService,
+      color: insertService.color || null,
+      language: insertService.language || null,
+      features: insertService.features || null,
+      id 
+    };
     this.services.set(id, service);
     return service;
   }
@@ -249,7 +392,13 @@ export class MemStorage implements IStorage {
 
   async createTestimonial(insertTestimonial: InsertTestimonial): Promise<Testimonial> {
     const id = randomUUID();
-    const testimonial: Testimonial = { ...insertTestimonial, id };
+    const testimonial: Testimonial = { 
+      ...insertTestimonial,
+      language: insertTestimonial.language || null,
+      rating: insertTestimonial.rating || null,
+      avatar: insertTestimonial.avatar || null,
+      id 
+    };
     this.testimonials.set(id, testimonial);
     return testimonial;
   }

@@ -11,10 +11,12 @@ export interface IStorage {
   getContacts(): Promise<Contact[]>;
   getContact(id: string): Promise<Contact | undefined>;
   markContactAsRead(id: string): Promise<Contact | undefined>;
+  deleteContact(id: string): Promise<void>;
   
   getBlogPosts(language?: string): Promise<BlogPost[]>;
   getBlogPost(id: string): Promise<BlogPost | undefined>;
   createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+  updateBlogPost(id: string, updates: Partial<BlogPost>): Promise<BlogPost>;
   
   getServices(language?: string): Promise<Service[]>;
   createService(service: InsertService): Promise<Service>;
@@ -357,6 +359,19 @@ export class DatabaseStorage implements IStorage {
     const [post] = await db
       .insert(blogPosts)
       .values(insertPost)
+      .returning();
+    return post;
+  }
+
+  async deleteContact(id: string): Promise<void> {
+    await db.delete(contacts).where(eq(contacts.id, id));
+  }
+
+  async updateBlogPost(id: string, updates: Partial<BlogPost>): Promise<BlogPost> {
+    const [post] = await db
+      .update(blogPosts)
+      .set(updates)
+      .where(eq(blogPosts.id, id))
       .returning();
     return post;
   }

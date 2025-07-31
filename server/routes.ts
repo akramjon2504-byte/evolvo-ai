@@ -30,6 +30,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete contact (admin)
+  app.delete("/api/contacts/:id", async (req, res) => {
+    try {
+      await storage.deleteContact(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  });
+
   // Get blog posts
   app.get("/api/blog", async (req, res) => {
     try {
@@ -49,6 +59,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.status(404).json({ success: false, error: "Post not found" });
         return;
       }
+      res.json({ success: true, data: post });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  });
+
+  // Update blog post (admin)
+  app.patch("/api/blog/:id", async (req, res) => {
+    try {
+      const post = await storage.updateBlogPost(req.params.id, req.body);
       res.json({ success: true, data: post });
     } catch (error) {
       res.status(500).json({ success: false, error: "Internal server error" });

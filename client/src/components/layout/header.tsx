@@ -72,6 +72,11 @@ export function Header() {
           {/* Language Selector & CTA */}
           <div className="hidden lg:flex items-center space-x-4">
             <LanguageSelector />
+            <Link href="/admin">
+              <Button variant="outline" size="sm">
+                Admin
+              </Button>
+            </Link>
             <Button 
               onClick={() => scrollToSection('contact')}
               className="bg-evolvo-blue text-white hover:bg-evolvo-blue/90"

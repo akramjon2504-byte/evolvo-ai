@@ -33,7 +33,7 @@ export default function AdminPage() {
   const handleRSSSync = async () => {
     setIsRSSLoading(true);
     try {
-      const response = await apiRequest("/api/rss/sync", "POST");
+      const response = await apiRequest("POST", "/api/rss/sync");
       toast({
         title: "RSS Yuklandi",
         description: "Yangi maqolalar avtomatik tarjima qilinib qo'shildi"

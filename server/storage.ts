@@ -1,5 +1,6 @@
-import { type User, type InsertUser, type Contact, type InsertContact, type BlogPost, type InsertBlogPost, type Service, type InsertService, type Testimonial, type InsertTestimonial } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { type User, type InsertUser, type Contact, type InsertContact, type BlogPost, type InsertBlogPost, type Service, type InsertService, type Testimonial, type InsertTestimonial, users, contacts, blogPosts, services, testimonials } from "@shared/schema";
+import { db } from "./db";
+import { eq, and, desc } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -22,25 +23,19 @@ export interface IStorage {
   createTestimonial(testimonial: InsertTestimonial): Promise<Testimonial>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private contacts: Map<string, Contact>;
-  private blogPosts: Map<string, BlogPost>;
-  private services: Map<string, Service>;
-  private testimonials: Map<string, Testimonial>;
-
+export class DatabaseStorage implements IStorage {
   constructor() {
-    this.users = new Map();
-    this.contacts = new Map();
-    this.blogPosts = new Map();
-    this.services = new Map();
-    this.testimonials = new Map();
-    
-    // Initialize with sample data
+    // Initialize with sample data if database is empty
     this.initializeData();
   }
 
-  private initializeData() {
+  private async initializeData() {
+    // Check if data already exists
+    const existingServices = await db.select().from(services).limit(1);
+    if (existingServices.length > 0) {
+      return; // Data already exists
+    }
+
     // Initialize services
     const servicesData: InsertService[] = [
       {
@@ -143,7 +138,10 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    servicesData.forEach(service => this.createService(service));
+    // Insert services data
+    for (const service of servicesData) {
+      await db.insert(services).values(service);
+    }
 
     // Initialize testimonials
     const testimonialsData: InsertTestimonial[] = [
@@ -207,7 +205,10 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    testimonialsData.forEach(testimonial => this.createTestimonial(testimonial));
+    // Insert testimonials data
+    for (const testimonial of testimonialsData) {
+      await db.insert(testimonials).values(testimonial);
+    }
 
     // Initialize blog posts
     const blogPostsData: InsertBlogPost[] = [
@@ -285,123 +286,112 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    blogPostsData.forEach(post => this.createBlogPost(post));
+    // Insert blog posts data
+    for (const post of blogPostsData) {
+      await db.insert(blogPosts).values(post);
+    }
   }
 
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async createContact(insertContact: InsertContact): Promise<Contact> {
-    const id = randomUUID();
-    const contact: Contact = { 
-      ...insertContact,
-      phone: insertContact.phone || null,
-      company: insertContact.company || null,
-      language: insertContact.language || null,
-      id, 
-      createdAt: new Date(),
-      isRead: false 
-    };
-    this.contacts.set(id, contact);
+    const [contact] = await db
+      .insert(contacts)
+      .values(insertContact)
+      .returning();
     return contact;
   }
 
   async getContacts(): Promise<Contact[]> {
-    return Array.from(this.contacts.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+    return await db.select().from(contacts).orderBy(contacts.createdAt);
   }
 
   async getContact(id: string): Promise<Contact | undefined> {
-    return this.contacts.get(id);
+    const [contact] = await db.select().from(contacts).where(eq(contacts.id, id));
+    return contact || undefined;
   }
 
   async markContactAsRead(id: string): Promise<Contact | undefined> {
-    const contact = this.contacts.get(id);
-    if (contact) {
-      contact.isRead = true;
-      this.contacts.set(id, contact);
-    }
-    return contact;
+    const [contact] = await db
+      .update(contacts)
+      .set({ isRead: true })
+      .where(eq(contacts.id, id))
+      .returning();
+    return contact || undefined;
   }
 
   async getBlogPosts(language?: string): Promise<BlogPost[]> {
-    const posts = Array.from(this.blogPosts.values())
-      .filter(post => post.published && (!language || post.language === language))
-      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
-    return posts;
+    if (language) {
+      return await db.select().from(blogPosts)
+        .where(and(eq(blogPosts.published, true), eq(blogPosts.language, language)))
+        .orderBy(desc(blogPosts.createdAt));
+    } else {
+      return await db.select().from(blogPosts)
+        .where(eq(blogPosts.published, true))
+        .orderBy(desc(blogPosts.createdAt));
+    }
   }
 
   async getBlogPost(id: string): Promise<BlogPost | undefined> {
-    return this.blogPosts.get(id);
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+    return post || undefined;
   }
 
   async createBlogPost(insertPost: InsertBlogPost): Promise<BlogPost> {
-    const id = randomUUID();
-    const post: BlogPost = { 
-      ...insertPost,
-      image: insertPost.image || null,
-      excerpt: insertPost.excerpt || null,
-      category: insertPost.category || null,
-      language: insertPost.language || null,
-      published: insertPost.published || null,
-      id, 
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.blogPosts.set(id, post);
+    const [post] = await db
+      .insert(blogPosts)
+      .values(insertPost)
+      .returning();
     return post;
   }
 
   async getServices(language?: string): Promise<Service[]> {
-    return Array.from(this.services.values())
-      .filter(service => !language || service.language === language);
+    if (language) {
+      return await db.select().from(services).where(eq(services.language, language));
+    } else {
+      return await db.select().from(services);
+    }
   }
 
   async createService(insertService: InsertService): Promise<Service> {
-    const id = randomUUID();
-    const service: Service = { 
-      ...insertService,
-      color: insertService.color || null,
-      language: insertService.language || null,
-      features: insertService.features || null,
-      id 
-    };
-    this.services.set(id, service);
+    const [service] = await db
+      .insert(services)
+      .values(insertService)
+      .returning();
     return service;
   }
 
   async getTestimonials(language?: string): Promise<Testimonial[]> {
-    return Array.from(this.testimonials.values())
-      .filter(testimonial => !language || testimonial.language === language);
+    if (language) {
+      return await db.select().from(testimonials).where(eq(testimonials.language, language));
+    } else {
+      return await db.select().from(testimonials);
+    }
   }
 
   async createTestimonial(insertTestimonial: InsertTestimonial): Promise<Testimonial> {
-    const id = randomUUID();
-    const testimonial: Testimonial = { 
-      ...insertTestimonial,
-      language: insertTestimonial.language || null,
-      rating: insertTestimonial.rating || null,
-      avatar: insertTestimonial.avatar || null,
-      id 
-    };
-    this.testimonials.set(id, testimonial);
+    const [testimonial] = await db
+      .insert(testimonials)
+      .values(insertTestimonial)
+      .returning();
     return testimonial;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

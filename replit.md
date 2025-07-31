@@ -22,10 +22,11 @@ Preferred communication style: Simple, everyday language.
 ### Backend Architecture
 - **Runtime**: Node.js with Express.js
 - **Language**: TypeScript with ES modules
-- **Database**: PostgreSQL with Drizzle ORM
+- **Database**: PostgreSQL with Drizzle ORM (DatabaseStorage implementation)
 - **Database Provider**: Neon Database (@neondatabase/serverless)
 - **Validation**: Zod schemas shared between frontend and backend
 - **Session Management**: Express sessions with PostgreSQL store (connect-pg-simple)
+- **Data Storage**: Full database integration with automatic schema migration
 
 ## Key Components
 
@@ -58,8 +59,8 @@ RESTful API endpoints under `/api/`:
 1. **Client Request**: User interacts with React components
 2. **State Management**: TanStack React Query manages API calls and caching
 3. **API Layer**: Express.js routes handle business logic
-4. **Data Storage**: Storage abstraction layer (currently in-memory with sample data, designed for database integration)
-5. **Database**: Drizzle ORM manages PostgreSQL operations
+4. **Data Storage**: DatabaseStorage class with full PostgreSQL integration
+5. **Database**: Drizzle ORM manages PostgreSQL operations with UUID primary keys
 6. **Response**: JSON responses with consistent success/error structure
 
 ## External Dependencies

@@ -328,6 +328,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Telegram marketing endpoints
+  app.get("/api/admin/telegram-stats", async (req, res) => {
+    try {
+      const { telegramMarketing } = await import("./telegram-marketing");
+      const stats = telegramMarketing.getStats();
+      res.json({ success: true, data: stats });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch Telegram stats" });
+    }
+  });
+
+  app.post("/api/admin/send-telegram-test", async (req, res) => {
+    try {
+      const { chatId, message } = req.body;
+      const { telegramMarketing } = await import("./telegram-marketing");
+      const result = await telegramMarketing.sendTestMessage(chatId, message);
+      res.json({ success: result.success, message: result.message || result.error });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to send test message" });
+    }
+  });
+
+  app.post("/api/admin/send-telegram-marketing", async (req, res) => {
+    try {
+      const { day } = req.body;
+      const { telegramMarketing } = await import("./telegram-marketing");
+      await telegramMarketing.sendMarketingMessage(day || 1);
+      res.json({ success: true, message: "Telegram marketing messages sent successfully" });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to send Telegram marketing messages" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

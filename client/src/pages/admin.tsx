@@ -19,6 +19,7 @@ import { AnalyticsDashboard } from "@/components/admin/analytics-dashboard";
 import { ContentManagement } from "@/components/admin/content-management";
 import { SystemSettings } from "@/components/admin/system-settings";
 import { EmailMarketing } from "@/components/admin/email-marketing";
+import { TelegramMarketing } from "@/components/admin/telegram-marketing";
 import type { Contact, BlogPost, Service, Testimonial } from "@shared/schema";
 
 export default function AdminPage() {
@@ -137,7 +138,7 @@ export default function AdminPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="contacts">Mijozlar</TabsTrigger>
             <TabsTrigger value="blog">Blog</TabsTrigger>
@@ -145,6 +146,7 @@ export default function AdminPage() {
             <TabsTrigger value="users">Foydalanuvchilar</TabsTrigger>
             <TabsTrigger value="analytics">Analitika</TabsTrigger>
             <TabsTrigger value="email">Email</TabsTrigger>
+            <TabsTrigger value="telegram">Telegram</TabsTrigger>
             <TabsTrigger value="settings">Sozlamalar</TabsTrigger>
           </TabsList>
 
@@ -482,6 +484,17 @@ export default function AdminPage() {
                 <p className="text-gray-600">Avtomatik email kampaniyalari va mijozlar bilan aloqa</p>
               </div>
               <EmailMarketing />
+            </div>
+          </TabsContent>
+
+          {/* Telegram Marketing Tab */}
+          <TabsContent value="telegram">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Telegram Marketing</h2>
+                <p className="text-gray-600">Telegram bot va avtomatik xabar yuborish tizimi</p>
+              </div>
+              <TelegramMarketing />
             </div>
           </TabsContent>
 

@@ -46,6 +46,8 @@ Comprehensive admin interface with authentication:
 - **Contact Management**: View and delete customer inquiries
 - **Blog Management**: Create, publish/unpublish, and manage blog posts
 - **Content Overview**: View services and testimonials
+- **Email Marketing**: Complete automation system with 30-day templates and OpenAI personalization
+- **Telegram Marketing**: Bot integration with automated messaging and subscriber management
 - **Security**: Protected routes with localStorage-based auth
 - **RSS Integration**: Manual RSS sync functionality for automated content generation
 
@@ -61,10 +63,15 @@ Comprehensive search engine optimization implementation:
 
 ### API Structure
 RESTful API endpoints under `/api/`:
-- `POST /api/contact` - Contact form submission
+- `POST /api/contact` - Contact form submission with welcome email trigger
 - `GET /api/contacts` - Admin contact list
 - `GET /api/blog` - Blog posts with language filtering
 - `GET /api/blog/:id` - Individual blog post
+- `GET /api/admin/email-stats` - Email marketing statistics
+- `POST /api/admin/send-marketing-emails` - Manual marketing email trigger
+- `GET /api/admin/telegram-stats` - Telegram bot statistics
+- `POST /api/admin/send-telegram-test` - Test Telegram message
+- `POST /api/admin/send-telegram-marketing` - Manual Telegram marketing
 - Service and testimonial endpoints (implemented in storage layer)
 
 ### Internationalization
@@ -90,6 +97,9 @@ RESTful API endpoints under `/api/`:
 - **@tanstack/react-query**: Server state management
 - **@hookform/resolvers**: Form validation integration
 - **zod**: Runtime type validation and schema definition
+- **openai**: AI content generation and translation
+- **node-telegram-bot-api**: Telegram bot integration
+- **node-cron**: Automated scheduling for marketing campaigns
 
 ### UI Dependencies
 - **@radix-ui/***: Comprehensive set of unstyled UI primitives

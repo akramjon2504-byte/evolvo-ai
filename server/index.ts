@@ -42,6 +42,9 @@ app.use((req, res, next) => {
 
   // Email marketing scheduler ni ishga tushirish
   import("./email-scheduler");
+
+  // Telegram marketing scheduler ni ishga tushirish
+  import("./telegram-scheduler");
   
   const server = await registerRoutes(app);
 

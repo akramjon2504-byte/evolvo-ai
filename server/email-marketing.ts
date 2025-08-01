@@ -154,11 +154,15 @@ export async function sendWelcomeEmail(contact: Contact): Promise<boolean> {
       content: personalizedEmail.content,
       type: "welcome",
       status: "sent",
-      sentAt: new Date().toISOString()
+      sentAt: new Date()
     };
 
     // Storage ga email log qo'shish
-    await storage.addEmailLog(emailLog);
+    try {
+      await storage.addEmailLog(emailLog);
+    } catch (error) {
+      console.error("Email log xatolik:", error);
+    }
 
     console.log(`✅ Xush kelibsiz email yuborildi: ${contact.email}`);
     console.log(`📧 Mavzu: ${personalizedEmail.subject}`);

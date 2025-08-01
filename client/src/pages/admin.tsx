@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { Trash2, Edit, Plus, Eye, EyeOff, Calendar, User, Mail, MessageSquare, LogOut, Home } from "lucide-react";
+import { Trash2, Edit, Plus, Eye, EyeOff, Calendar, User, Mail, MessageSquare, LogOut, Home, Send } from "lucide-react";
 import { BlogForm } from "@/components/admin/blog-form";
 import { SEOHead } from "@/components/seo/head";
 import { DashboardStats } from "@/components/admin/dashboard-stats";

@@ -32,22 +32,58 @@ class TelegramMarketing {
   private subscribers: Map<number, { chatId: number, username?: string, language: string, subscribeDate: Date }> = new Map();
 
   constructor() {
-    this.initBot();
+    this.initBot().catch(error => {
+      console.error("❌ Bot constructor xatolik:", error);
+    });
   }
 
-  private initBot() {
-    if (TELEGRAM_BOT_TOKEN === 'DEMO_TOKEN') {
+  private async initBot() {
+    if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === 'DEMO_TOKEN') {
       console.log("🤖 Telegram bot demo rejimda ishlamoqda");
       console.log("💡 Haqiqiy Telegram bot uchun TELEGRAM_BOT_TOKEN environment variable qo'shing");
       return;
     }
 
     try {
-      this.bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
+      // Birinchi bot tokenini tekshirish
+      this.bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false });
+      
+      // Bot ma'lumotlarini olish (token tekshirish)
+      const botInfo = await this.bot.getMe();
+      console.log(`✅ Bot topildi: @${botInfo.username} (${botInfo.first_name})`);
+      
+      // Endi polling yoqish
+      await this.bot.startPolling({
+        restart: true,
+        polling: {
+          interval: 1000,
+          params: {
+            timeout: 10
+          }
+        }
+      });
+      
+      // Error handling
+      this.bot.on('polling_error', (error) => {
+        console.error("🚫 Telegram polling xatolik:", error.message);
+        if (error.message.includes('404')) {
+          console.error("💡 Bot token noto'g'ri: " + TELEGRAM_BOT_TOKEN.substring(0, 10) + "...");
+          console.error("💡 BotFather orqali to'g'ri token oling");
+        }
+      });
+
+      this.bot.on('error', (error) => {
+        console.error("❌ Telegram bot umumiy xatolik:", error);
+      });
+
       this.setupBotCommands();
-      console.log("✅ Telegram bot muvaffaqiyatli ishga tushdi");
-    } catch (error) {
-      console.error("❌ Telegram bot xatolik:", error);
+      console.log("✅ Telegram bot polling muvaffaqiyatli ishga tushdi");
+    } catch (error: any) {
+      console.error("❌ Telegram bot ishga tushmadi:", error.message);
+      if (error.message.includes('404') || error.message.includes('Unauthorized')) {
+        console.error("💡 Token xatolik - BotFather orqali yangi token oling");
+        console.error("💡 Mavjud token: " + TELEGRAM_BOT_TOKEN.substring(0, 10) + "...");
+      }
     }
   }
 
@@ -189,8 +225,13 @@ Sog' bo'ling! 👋`;
 
   // Marketing xabarlarni yuborish
   async sendMarketingMessage(templateDay: number) {
-    if (!this.bot || this.subscribers.size === 0) {
-      console.log("📱 Telegram demo rejim - xabar yuborilmadi");
+    if (!this.bot) {
+      console.log("📱 Telegram bot faol emas - xabar yuborilmadi");
+      return;
+    }
+
+    if (this.subscribers.size === 0) {
+      console.log("📱 Telegram obunachi yo'q - xabar yuborilmadi");
       return;
     }
 
@@ -281,8 +322,7 @@ ${message}`;
   // Test xabar yuborish
   async sendTestMessage(chatId: number, message: string) {
     if (!this.bot) {
-      console.log("📱 Telegram demo rejim - test xabar");
-      return { success: true, message: "Demo rejimda xabar yuborildi" };
+      return { success: false, error: "Telegram bot faol emas" };
     }
 
     try {

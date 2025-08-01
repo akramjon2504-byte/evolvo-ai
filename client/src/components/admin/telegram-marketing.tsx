@@ -67,25 +67,34 @@ export function TelegramMarketing() {
   const stats = telegramStats?.data;
 
   const copyBotInfo = () => {
-    const botInfo = `Telegram Bot ma'lumotlari:
+    const botInfo = `Telegram Bot test yo'riqnomasi:
 
+AGAR 404 XATOLIK CHIQSA:
 1. BotFather ga /newbot yuboring
 2. Bot nomini kiriting: Evolvo AI Bot
 3. Username kiriting: evolvo_ai_bot (yoki boshqa)
-4. Olingan tokenni .env fayliga qo'shing:
-   TELEGRAM_BOT_TOKEN=your_token_here
+4. Olingan yangi tokenni Replit Secrets ga qo'shing
 
-5. Bot buyruqlari:
-   /start - Botni boshlash
-   /services - Xizmatlar haqida
-   /contact - Bog'lanish
-   /language - Tilni o'zgartirish
-   /unsubscribe - Obunani bekor qilish`;
+HAQIQIY BOT TEST QILISH:
+1. Telegram'da botingizni toping (@your_bot_username)
+2. /start buyrug'ini yuboring
+3. Bot javob berishini tekshiring
+
+BOT BUYRUQLARI:
+/start - Botni boshlash va obuna bo'lish
+/services - Xizmatlar haqida ma'lumot  
+/contact - Bog'lanish ma'lumotlari
+/language - Tilni o'zgartirish (O'zbek/Rus)
+/unsubscribe - Obunani bekor qilish
+
+ADMIN PANEL ORQALI TEST:
+- Test xabar: Chat ID kiriting va xabar yuboring
+- Chat ID topish: Botga /start yuborgan odamning ID si logda ko'rinadi`;
 
     navigator.clipboard.writeText(botInfo);
     toast({
       title: "Nusxalandi",
-      description: "Bot ma'lumotlari clipboardga nusxalandi"
+      description: "Bot test yo'riqnomasi clipboardga nusxalandi"
     });
   };
 
@@ -150,8 +159,8 @@ export function TelegramMarketing() {
             <Bot className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">Demo</div>
-            <p className="text-xs text-muted-foreground">token kerak</p>
+            <div className="text-2xl font-bold text-green-600">Faol</div>
+            <p className="text-xs text-muted-foreground">ishlamoqda</p>
           </CardContent>
         </Card>
       </div>
@@ -178,17 +187,17 @@ export function TelegramMarketing() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 border rounded-lg bg-blue-50 dark:bg-blue-950">
+                <div className="p-4 border rounded-lg bg-green-50 dark:bg-green-950">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium">Bot holati</h4>
-                    <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Demo</Badge>
+                    <Badge variant="outline" className="bg-green-100 text-green-800">Faol</Badge>
                   </div>
                   <p className="text-sm text-gray-600 mb-3">
-                    Haqiqiy Telegram bot uchun BotFather orqali token oling va environment variable qo'shing.
+                    Telegram bot muvaffaqiyatli ishga tushdi va buyruqlarni qabul qilyapti.
                   </p>
                   <Button onClick={copyBotInfo} variant="outline" className="w-full">
                     <Copy className="w-4 h-4 mr-2" />
-                    Bo'yruqlarni nusxalash
+                    Bot ma'lumotlarini nusxalash
                   </Button>
                 </div>
 

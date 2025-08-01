@@ -4,6 +4,27 @@ import { BlogPost } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
+// AI texnologiyalar uchun turli rasmlar
+const aiImages = [
+  "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // AI brain
+  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // AI technology
+  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // Robot hand
+  "https://images.unsplash.com/photo-1555255707-c07966088b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // Digital brain
+  "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // AI neural network
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // Data visualization
+  "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // Machine learning
+  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // Technology network
+  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400", // Digital innovation
+  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400"  // AI circuit
+];
+
+function getRandomAIImage(postId: string): string {
+  // Post ID asosida doimiy rasm tanlash (har safar bir xil bo'ladi)
+  const hash = postId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const imageIndex = hash % aiImages.length;
+  return aiImages[imageIndex];
+}
+
 interface BlogSectionProps {
   showAll?: boolean;
   limitPosts?: number;
@@ -11,6 +32,13 @@ interface BlogSectionProps {
 
 export function BlogSection({ showAll = false, limitPosts = 3 }: BlogSectionProps) {
   const { language } = useLanguage();
+
+  // Post ID asosida doimiy rasm tanlash
+  const getRandomAIImage = (postId: string): string => {
+    const hash = postId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const imageIndex = hash % aiImages.length;
+    return aiImages[imageIndex];
+  };
 
   const { data: blogPosts, isLoading } = useQuery<{ success: boolean; data: BlogPost[] }>({
     queryKey: [`/api/blog?lang=${language}`],
@@ -59,7 +87,7 @@ export function BlogSection({ showAll = false, limitPosts = 3 }: BlogSectionProp
             <article key={post.id} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow">
               <Link href={`/blog/${post.id}`}>
                 <img 
-                  src={post.image || "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400"} 
+                  src={post.image || getRandomAIImage(post.id)} 
                   alt={post.title} 
                   className="w-full h-48 object-cover cursor-pointer hover:scale-105 transition-transform"
                 />

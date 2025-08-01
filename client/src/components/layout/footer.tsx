@@ -25,7 +25,7 @@ export function Footer() {
               O'zbekistonda biznes raqamlashtirish va AI yechimlarida yetakchi kompaniya.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://t.me/vertextestai_bot" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 <i className="fab fa-telegram text-xl"></i>
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

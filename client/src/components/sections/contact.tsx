@@ -104,7 +104,7 @@ export function ContactSection() {
             <div className="mt-12">
               <h4 className="text-lg font-semibold text-gray-900 mb-4">{t("contact.social")}</h4>
               <div className="flex space-x-4">
-                <a href="#" className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
+                <a href="https://t.me/vertextestai_bot" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
                   <i className="fab fa-telegram"></i>
                 </a>
                 <a href="#" className="w-10 h-10 bg-blue-800 rounded-lg flex items-center justify-center text-white hover:bg-blue-900 transition-colors">

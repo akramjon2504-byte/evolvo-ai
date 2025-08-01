@@ -8,7 +8,7 @@ export function FloatingContact() {
   };
 
   const handleTelegram = () => {
-    window.open('https://t.me/evolvo_ai', '_blank');
+    window.open('https://t.me/vertextestai_bot', '_blank');
   };
 
   return (

@@ -4,7 +4,12 @@ import { BlogPost } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
-export function BlogSection() {
+interface BlogSectionProps {
+  showAll?: boolean;
+  limitPosts?: number;
+}
+
+export function BlogSection({ showAll = false, limitPosts = 3 }: BlogSectionProps) {
   const { language } = useLanguage();
 
   const { data: blogPosts, isLoading } = useQuery<{ success: boolean; data: BlogPost[] }>({
@@ -50,7 +55,7 @@ export function BlogSection() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts?.data?.map((post) => (
+          {(showAll ? blogPosts?.data : blogPosts?.data?.slice(0, limitPosts))?.map((post) => (
             <article key={post.id} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow">
               <Link href={`/blog/${post.id}`}>
                 <img 
@@ -83,11 +88,15 @@ export function BlogSection() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <Button variant="outline" className="border-2 border-evolvo-blue text-evolvo-blue hover:bg-evolvo-blue hover:text-white">
-            Barcha maqolalarni ko'rish
-          </Button>
-        </div>
+        {!showAll && (
+          <div className="text-center mt-12">
+            <Link href="/blog">
+              <Button variant="outline" className="border-2 border-evolvo-blue text-evolvo-blue hover:bg-evolvo-blue hover:text-white">
+                Barcha maqolalarni ko'rish
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

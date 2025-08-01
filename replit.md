@@ -35,6 +35,15 @@ Preferred communication style: Simple, everyday language.
 
 ## Key Components
 
+### Page Structure (Multi-Page Architecture)
+The application follows a multi-page structure to optimize user experience:
+- **Home Page** (`/`): Hero section, services overview, AI demo preview, testimonials, recent blog posts (4 latest), contact
+- **Services Page** (`/services`): Complete services catalog, project calculator, AR/VR demos, IoT dashboard, blockchain integration
+- **Portfolio Page** (`/portfolio`): Project showcase, client testimonials, company information, case studies
+- **AI Demo Page** (`/ai-demo`): Interactive AI chatbot, voice search technology, pricing plans, live demonstrations
+- **Blog Page** (`/blog`): Complete blog listing with all articles, pagination, category filtering
+- **Individual Blog Posts** (`/blog/:id`): Full article view with SEO optimization
+
 ### Database Schema
 The application uses a PostgreSQL database with the following main tables:
 - **users**: User authentication and management
@@ -76,18 +85,25 @@ Comprehensive search engine optimization implementation:
 - **Individual Page SEO**: Dynamic meta tags for blog posts and pages
 - **Robots.txt**: Search engine crawler instructions with proper admin exclusions
 
+### Navigation & Routing
+- **Modern Multi-Page Routing**: Uses Wouter for client-side routing between dedicated pages
+- **SEO-Optimized URLs**: Each page has unique URLs for better search engine indexing
+- **Responsive Navigation**: Mobile-friendly navbar with page links and smooth transitions
+- **Content Separation**: Homepage shows previews, dedicated pages contain complete content
+
 ### API Structure
 RESTful API endpoints under `/api/`:
 - `POST /api/contact` - Contact form submission with welcome email trigger
 - `GET /api/contacts` - Admin contact list
-- `GET /api/blog` - Blog posts with language filtering
-- `GET /api/blog/:id` - Individual blog post
+- `GET /api/blog` - Blog posts with language filtering and pagination
+- `GET /api/blog/:id` - Individual blog post with full content
+- `GET /api/services/:language` - Services list filtered by language
+- `GET /api/testimonials/:language` - Testimonials filtered by language
 - `GET /api/admin/email-stats` - Email marketing statistics
 - `POST /api/admin/send-marketing-emails` - Manual marketing email trigger
 - `GET /api/admin/telegram-stats` - Telegram AI assistant statistics
 - `POST /api/admin/send-telegram-test` - Test AI assistant responses
 - `POST /api/admin/send-telegram-marketing` - Manual marketing campaigns
-- Service and testimonial endpoints (implemented in storage layer)
 
 ### Internationalization
 - Three-language support: Uzbek (default), Russian, English

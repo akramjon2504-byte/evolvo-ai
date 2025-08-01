@@ -9,7 +9,7 @@ const navItems = [
   { name: "Xizmatlar", href: "/services", isLink: true },
   { name: "AI Demo", href: "/ai-demo", isLink: true },
   { name: "Portfolio", href: "/portfolio", isLink: true },
-  { name: "Blog", href: "#blog", isLink: false },
+  { name: "Blog", href: "/blog", isLink: true },
   { name: "Aloqa", href: "#contact", isLink: false }
 ];
 

@@ -20,7 +20,7 @@ export default function Home() {
       <ServicesSection />
       <AIDemoSection />
       <TestimonialsSection />
-      <BlogSection />
+      <BlogSection limitPosts={4} />
       <ContactSection />
     </main>
     <FloatingContact />

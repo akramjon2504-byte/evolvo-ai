@@ -333,7 +333,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { telegramMarketing } = await import("./telegram-marketing");
       const stats = telegramMarketing.getStats();
-      res.json({ success: true, data: stats });
+      const leads = telegramMarketing.getLeadStats();
+      res.json({ 
+        success: true, 
+        data: { 
+          ...stats, 
+          leads: leads 
+        } 
+      });
     } catch (error) {
       res.status(500).json({ success: false, error: "Failed to fetch Telegram stats" });
     }

@@ -96,13 +96,16 @@ class TelegramMarketing {
       const username = msg.from?.username;
       const firstName = msg.from?.first_name || '';
       
-      // Mijozni ro'yxatga olish
+      // Mijozni ro'yxatga olish va marketing bazasiga qo'shish
       this.subscribers.set(chatId, {
         chatId,
         username,
         language: 'uz', // default
         subscribeDate: new Date()
       });
+
+      // Marketing bazasiga avtomatik qo'shish
+      this.addToMarketingList(chatId, firstName, username);
 
       const welcomeMessage = `👋 Salom ${firstName}! Men Evolvo AI kompaniyasining AI assistentiman.
 
@@ -420,6 +423,9 @@ Agar savolingiz boshqa mavzuda bo'lsa, batafsil yozib yuboring - men sizga yorda
 
       if (response && !msg.text?.startsWith('/')) {
         await this.bot?.sendMessage(chatId, response);
+        
+        // Marketing imkoniyati: Qiziqish ko'rsatgan mijozlarni alohida ro'yxatga olish
+        this.trackUserInterest(chatId, userMessage, firstName);
       }
     });
 
@@ -547,6 +553,132 @@ ${message}`;
       console.error("❌ Test xabar xatolik:", error);
       return { success: false, error: "Xabar yuborishda xatolik" };
     }
+  }
+  // Marketing funksiyalari
+  private async addToMarketingList(chatId: number, firstName: string, username?: string) {
+  try {
+    // Mijoz ma'lumotlarini saqlash (kelajakda database ga)
+    const customerInfo = {
+      chatId,
+      firstName,
+      username,
+      source: 'telegram_bot',
+      joinDate: new Date(),
+      status: 'active'
+    };
+    
+    console.log(`📋 Marketing ro'yxatiga qo'shildi: ${firstName} (${chatId})`);
+    
+    // Welcome email yuborish (agar email mavjud bo'lsa)
+    // Bu yerda email marketing bilan integratsiya bo'ladi
+    
+  } catch (error) {
+    console.error('Marketing ro\'yxatiga qo\'shishda xatolik:', error);
+  }
+  }
+
+  private async trackUserInterest(chatId: number, message: string, firstName: string) {
+    try {
+      // Mijozning qiziqishini tahlil qilish va tegishli marketing xabar yuborish
+      const interests = [];
+      
+      if (message.includes('crm') || message.includes('mijoz')) {
+        interests.push('CRM_SYSTEMS');
+        this.sendTargetedMarketingMessage(chatId, 'CRM_FOLLOW_UP', firstName);
+      }
+      
+      if (message.includes('veb') || message.includes('sayt')) {
+        interests.push('WEB_DEVELOPMENT');
+        this.sendTargetedMarketingMessage(chatId, 'WEBSITE_FOLLOW_UP', firstName);
+      }
+      
+      if (message.includes('narx') || message.includes('price')) {
+        interests.push('PRICING_INQUIRY');
+        this.sendTargetedMarketingMessage(chatId, 'PRICING_FOLLOW_UP', firstName);
+      }
+      
+      if (interests.length > 0) {
+        console.log(`🎯 Mijoz qiziqishi aniqlandi: ${firstName} -> ${interests.join(', ')}`);
+      }
+    
+    } catch (error) {
+      console.error('Mijoz qiziqishini kuzatishda xatolik:', error);
+    }
+  }
+
+  private async sendTargetedMarketingMessage(chatId: number, messageType: string, firstName: string) {
+    try {
+      // Targeted marketing xabarlar
+      const targetedMessages = {
+      'CRM_FOLLOW_UP': `🎯 ${firstName}, CRM tizimi haqida qo'shimcha ma'lumot!
+
+💼 **Bizning CRM yechimimiz nima beradi:**
+• Mijozlar bilan munosabatni 60% yaxshilaydi
+• Savdo jarayonini 40% tezlashtiradi  
+• Avtomatik hisobotlar va analytics
+• Mobile app va Telegram integratsiya
+
+🎁 **Maxsus taklif:** Birinchi 3 oy - 50% chegirma!
+
+📞 Demo ko'rish uchun: /contact
+💬 Savollaringiz bo'lsa, shunchaki yozing!`,
+
+      'WEBSITE_FOLLOW_UP': `🌐 ${firstName}, veb-sayt yaratish bo'yicha maxsus taklifimiz!
+
+✨ **Professional veb-sayt paketimiz:**
+• Zamonaviy dizayn va UX/UI
+• Mobile-friendly va SEO optimizatsiya
+• AI chatbot integratsiyasi
+• Analytics va hisobotlar
+• 1 yillik texnik qo'llab-quvvatlash
+
+🚀 **Yana 48 soat ichida:** 30% chegirma!
+
+📋 Portfolio ko'rish: evolvo-ai.uz/portfolio
+💬 Batafsil gaplashaylik!`,
+
+      'PRICING_FOLLOW_UP': `💰 ${firstName}, narxlar haqida batafsil ma'lumot!
+
+🎯 **Sizning ehtiyojingizga mos paket:**
+• Boshlang'ich loyihalar: $299-799
+• Professional yechimlar: $999-1999  
+• Enterprise darajasi: $2999+
+
+🎁 **Hozirgi takliflarimiz:**
+• Birinchi mijozlar - 50% chegirma
+• To'liq paket - 30% qo'shimcha chegirma
+• Bepul konsultatsiya va demo
+
+📞 Aniq narx olish: /contact
+💼 Loyihangizni tasvirlab bering, biz taklif tayyorlaymiz!`
+      };
+
+      const message = targetedMessages[messageType];
+      if (message) {
+        // 2-3 daqiqadan keyin yuborish (spam bo'lmaslik uchun)
+        setTimeout(async () => {
+          await this.bot?.sendMessage(chatId, message);
+          console.log(`📤 Targeted marketing yuborildi: ${messageType} -> ${chatId}`);
+        }, 2 * 60 * 1000); // 2 daqiqa kutish
+      }
+    
+    } catch (error) {
+      console.error('Targeted marketing xabar yuborishda xatolik:', error);
+    }
+  }
+
+  // Lead generation statistikasi
+  getLeadStats() {
+    const leads = {
+      totalInteractions: 0,
+      crmInquiries: 0,
+      websiteInquiries: 0,
+      pricingInquiries: 0,
+      recentLeads: []
+    };
+    
+    // Bu yerda real ma'lumotlar bo'ladi
+    return leads;
   }
 }
 

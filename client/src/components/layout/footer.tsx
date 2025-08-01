@@ -76,9 +76,9 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-6">{t("contact.info")}</h3>
             <ul className="space-y-3">
-              <li className="text-gray-400">+998 (71) 123-45-67</li>
+              <li className="text-gray-400">+998 97 477 12 29</li>
               <li className="text-gray-400">info@evolvo-ai.uz</li>
-              <li className="text-gray-400">Toshkent sh., Chilonzor t.<br/>IT Park</li>
+              <li className="text-gray-400">Toshkent shahri, Olmazor tumani<br/>Nurafshon 12</li>
             </ul>
           </div>
         </div>

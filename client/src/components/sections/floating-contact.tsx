@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 export function FloatingContact() {
   const handleWhatsApp = () => {
     const message = encodeURIComponent("Salom! Evolvo AI xizmatlari haqida ma'lumot olishni xohlayman.");
-    window.open(`https://wa.me/998901234567?text=${message}`, '_blank');
+    window.open(`https://wa.me/998974771229?text=${message}`, '_blank');
   };
 
   const handleTelegram = () => {

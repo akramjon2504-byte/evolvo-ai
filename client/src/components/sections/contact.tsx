@@ -78,7 +78,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <div className="font-semibold text-gray-900">{t("contact.phone")}</div>
-                  <div className="text-gray-600">+998 (71) 123-45-67</div>
+                  <div className="text-gray-600">+998 97 477 12 29</div>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -96,7 +96,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <div className="font-semibold text-gray-900">{t("contact.address")}</div>
-                  <div className="text-gray-600">Toshkent sh., Chilonzor t., IT Park</div>
+                  <div className="text-gray-600">Toshkent shahri, Olmazor tumani, Nurafshon 12</div>
                 </div>
               </div>
             </div>

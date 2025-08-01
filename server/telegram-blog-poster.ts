@@ -9,14 +9,11 @@ export class TelegramBlogPoster {
   private channelId: string;
 
   constructor() {
-    // Kanal uchun alohida bot token kerak
-    const channelToken = process.env.TELEGRAM_CHANNEL_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
-    
-    if (!channelToken) {
-      throw new Error('TELEGRAM_CHANNEL_BOT_TOKEN yoki TELEGRAM_BOT_TOKEN environment variable is required');
+    if (!process.env.TELEGRAM_CHANNEL_BOT_TOKEN) {
+      throw new Error('TELEGRAM_CHANNEL_BOT_TOKEN environment variable is required');
     }
     
-    this.bot = new TelegramBot(channelToken);
+    this.bot = new TelegramBot(process.env.TELEGRAM_CHANNEL_BOT_TOKEN);
     this.channelId = '@evolvo_ai'; // Kanal username
   }
 
@@ -128,6 +125,13 @@ Salom! Bu test xabari. Kanal to'g'ri sozlangan va xabarlar muvaffaqiyatli yubori
       
     } catch (error) {
       console.error('❌ Test xabar yuborishda xatolik:', error);
+      
+      // 403 error bo'lsa, bot admin emas
+      if (error.response?.body?.error_code === 403) {
+        console.log('⚠️  Bot kanalga admin sifatida qo\'shilmagan. Bot username:', error.response?.body?.description);
+        return false;
+      }
+      
       return false;
     }
   }

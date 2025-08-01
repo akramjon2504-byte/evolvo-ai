@@ -171,12 +171,16 @@ export function TelegramBlogSection() {
 
       {/* Yo'riqnoma */}
       <Card className="p-6 bg-blue-50 border-blue-200">
-        <h4 className="font-semibold text-blue-900 mb-3">📱 Telegram Kanal Haqida</h4>
+        <h4 className="font-semibold text-blue-900 mb-3">📱 Telegram Kanal Sozlash</h4>
         <div className="text-sm text-blue-800 space-y-2">
           <p>• Kanal: <strong>@evolvo_ai</strong> - Evolvo AI rasmiy yangiliklar kanali</p>
-          <p>• Blog postlar avtomatik ravishda formatlangan holda yuboriladi</p>
-          <p>• Har bir post uchun hashtag va havolalar qo'shiladi</p>
-          <p>• Test xabar orqali kanal ulanishini tekshirishingiz mumkin</p>
+          <p>• <strong>MUHIM:</strong> Botni kanalga admin sifatida qo'shing:</p>
+          <p className="ml-4">1. @evolvo_ai kanaliga kiring</p>
+          <p className="ml-4">2. &quot;Kanalni boshqarish&quot; &rarr; &quot;Adminlar&quot;</p>
+          <p className="ml-4">3. &quot;Admin qo&apos;shish&quot; &rarr; <strong>@saavyangi_bot</strong></p>
+          <p className="ml-4">4. "Xabar yuborish" ruxsatini bering</p>
+          <p>• Blog postlar avtomatik formatlangan holda yuboriladi</p>
+          <p>• Test xabar orqali ulanishni tekshiring</p>
         </div>
       </Card>
 

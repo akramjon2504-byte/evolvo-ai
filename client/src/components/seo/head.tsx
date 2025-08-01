@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 import type { BlogPost } from "@shared/schema";
+import { useLanguage } from "@/hooks/use-language";
+import { seoKeywords, seoTitles, seoDescriptions, structuredData } from "@/lib/seo-keywords";
+import { generateSocialMeta } from "@/lib/social-seo";
 
 interface SEOHeadProps {
   title?: string;
@@ -8,27 +11,45 @@ interface SEOHeadProps {
   url?: string;
   type?: "website" | "article";
   blogPost?: BlogPost;
+  page?: 'home' | 'services' | 'blog' | 'pricing' | 'contact';
 }
 
 export function SEOHead({ 
-  title = "Evolvo AI - O'zbekistonda Sun'iy Intellekt va Biznes Raqamlashtirish Xizmatlari",
-  description = "Evolvo AI - O'zbekistonda yetakchi sun'iy intellekt va biznes raqamlashtirish kompaniyasi. Korporativ AI yechimlari, avtomatlashtirish va raqamli transformatsiya xizmatlari.",
+  title,
+  description,
   image = "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630",
   url = "https://evolvo-ai.replit.app/",
   type = "website",
-  blogPost
+  blogPost,
+  page = 'home'
 }: SEOHeadProps) {
+  const { language } = useLanguage();
+  
+  // Tilga mos title va description olish
+  const seoTitle = title || seoTitles[language]?.[page] || seoTitles.uz[page];
+  const seoDescription = description || seoDescriptions[language]?.[page] || seoDescriptions.uz[page];
+  
+  // Kalit so'zlarni birlashtirish
+  const keywords = [
+    ...seoKeywords[language]?.primary || seoKeywords.uz.primary,
+    ...seoKeywords[language]?.secondary || seoKeywords.uz.secondary,
+    ...seoKeywords[language]?.longTail || seoKeywords.uz.longTail
+  ].join(', ');
   
   useEffect(() => {
+    // Social media meta teglar
+    const socialMeta = generateSocialMeta(page, language);
+
     // Agar blog post bo'lsa, uning ma'lumotlarini ishlatish
     if (blogPost) {
       const blogTitle = `${blogPost.title} | Evolvo AI Blog`;
-      const blogDescription = blogPost.excerpt || description;
+      const blogDescription = blogPost.excerpt || seoDescription;
       const blogImage = blogPost.image || image;
       const blogUrl = `${url}blog/${blogPost.id}`;
       
       updateMeta("title", blogTitle);
       updateMeta("description", blogDescription);
+      updateMeta("keywords", keywords);
       updateMeta("og:title", blogTitle);
       updateMeta("og:description", blogDescription);
       updateMeta("og:image", blogImage);
@@ -80,23 +101,34 @@ export function SEOHead({
       });
     } else {
       // Default meta tags
-      updateMeta("title", title);
-      updateMeta("description", description);
-      updateMeta("og:title", title);
-      updateMeta("og:description", description);
+      updateMeta("title", seoTitle);
+      updateMeta("description", seoDescription);
+      updateMeta("keywords", keywords);
+      
+      // Social media meta tags
+      Object.entries(socialMeta).forEach(([key, value]) => {
+        updateMeta(key, value);
+      });
+      
+      // Standard Open Graph and Twitter meta
+      updateMeta("og:title", seoTitle);
+      updateMeta("og:description", seoDescription);
       updateMeta("og:image", image);
       updateMeta("og:url", url);
       updateMeta("og:type", type);
-      updateMeta("twitter:title", title);
-      updateMeta("twitter:description", description);
+      updateMeta("twitter:title", seoTitle);
+      updateMeta("twitter:description", seoDescription);
       updateMeta("twitter:image", image);
       updateLink("canonical", url);
+      
+      // JSON-LD struktura ma'lumotlar
+      updateJsonLD(structuredData.organization);
     }
     
     // Update page title
-    document.title = blogPost ? `${blogPost.title} | Evolvo AI Blog` : title;
+    document.title = blogPost ? `${blogPost.title} | Evolvo AI Blog` : seoTitle;
     
-  }, [title, description, image, url, type, blogPost]);
+  }, [seoTitle, seoDescription, keywords, image, url, type, blogPost]);
 
   return null; // Bu komponent faqat meta teglarni yangilaydi
 }

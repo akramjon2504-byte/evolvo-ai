@@ -3,44 +3,30 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContactSchema } from "@shared/schema";
 import { z } from "zod";
+import { generateSitemap, generateRobotsTxt } from "./sitemap";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // SEO: Sitemap endpoint (before other routes)
   app.get("/sitemap.xml", async (req, res) => {
     try {
-      const blogPosts = await storage.getBlogPosts('uz');
-      const currentDate = new Date().toISOString();
-      
-      let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://evolvo-ai.replit.app/</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>`;
-
-      // Add blog posts to sitemap
-      blogPosts.forEach(post => {
-        if (post.published) {
-          sitemap += `
-  <url>
-    <loc>https://evolvo-ai.replit.app/blog/${post.id}</loc>
-    <lastmod>${post.updatedAt || post.createdAt}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`;
-        }
-      });
-
-      sitemap += `
-</urlset>`;
-
+      const sitemap = await generateSitemap();
       res.header('Content-Type', 'application/xml');
       res.send(sitemap);
     } catch (error) {
       console.error("❌ Sitemap generation error:", error);
       res.status(500).send("Error generating sitemap");
+    }
+  });
+
+  // SEO: Robots.txt endpoint
+  app.get("/robots.txt", async (req, res) => {
+    try {
+      const robotsTxt = await generateRobotsTxt();
+      res.header('Content-Type', 'text/plain');
+      res.send(robotsTxt);
+    } catch (error) {
+      console.error("❌ Robots.txt generation error:", error);
+      res.status(500).send("Error generating robots.txt");
     }
   });
 

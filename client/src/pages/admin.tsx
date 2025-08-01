@@ -13,12 +13,17 @@ import { queryClient, apiRequest } from "@/lib/queryClient";
 import { Trash2, Edit, Plus, Eye, EyeOff, Calendar, User, Mail, MessageSquare, LogOut, Home } from "lucide-react";
 import { BlogForm } from "@/components/admin/blog-form";
 import { SEOHead } from "@/components/seo/head";
+import { DashboardStats } from "@/components/admin/dashboard-stats";
+import { UserManagement } from "@/components/admin/user-management";
+import { AnalyticsDashboard } from "@/components/admin/analytics-dashboard";
+import { ContentManagement } from "@/components/admin/content-management";
+import { SystemSettings } from "@/components/admin/system-settings";
 import type { Contact, BlogPost, Service, Testimonial } from "@shared/schema";
 
 export default function AdminPage() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState("contacts");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [showBlogForm, setShowBlogForm] = useState(false);
   const [isRSSLoading, setIsRSSLoading] = useState(false);
 
@@ -131,24 +136,26 @@ export default function AdminPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="contacts" className="flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-              Kontaktlar
-            </TabsTrigger>
-            <TabsTrigger value="blog" className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              Blog
-            </TabsTrigger>
-            <TabsTrigger value="services" className="flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Xizmatlar
-            </TabsTrigger>
-            <TabsTrigger value="testimonials" className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              Testimoniallar
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-7">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="contacts">Mijozlar</TabsTrigger>
+            <TabsTrigger value="blog">Blog</TabsTrigger>
+            <TabsTrigger value="content">Kontent</TabsTrigger>
+            <TabsTrigger value="users">Foydalanuvchilar</TabsTrigger>
+            <TabsTrigger value="analytics">Analitika</TabsTrigger>
+            <TabsTrigger value="settings">Sozlamalar</TabsTrigger>
           </TabsList>
+
+          {/* Dashboard Tab */}
+          <TabsContent value="dashboard">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Dashboard ko'rinishi</h2>
+                <p className="text-gray-600">Platformaning umumiy statistikasi va asosiy ko'rsatkichlar</p>
+              </div>
+              <DashboardStats />
+            </div>
+          </TabsContent>
 
           {/* Contacts Tab */}
           <TabsContent value="contacts">
@@ -430,6 +437,50 @@ export default function AdminPage() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Content Management Tab */}
+          <TabsContent value="content">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Kontent boshqaruvi</h2>
+                <p className="text-gray-600">Sayt kontent va sahifalarini boshqarish</p>
+              </div>
+              <ContentManagement />
+            </div>
+          </TabsContent>
+
+          {/* User Management Tab */}
+          <TabsContent value="users">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Foydalanuvchi boshqaruvi</h2>
+                <p className="text-gray-600">Admin foydalanuvchilarni boshqarish va rollar</p>
+              </div>
+              <UserManagement />
+            </div>
+          </TabsContent>
+
+          {/* Analytics Tab */}
+          <TabsContent value="analytics">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Analitika va hisobotlar</h2>
+                <p className="text-gray-600">Sayt statistikasi, foydalanuvchi harakatlari va ko'rsatkichlar</p>
+              </div>
+              <AnalyticsDashboard />
+            </div>
+          </TabsContent>
+
+          {/* Settings Tab */}
+          <TabsContent value="settings">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Tizim sozlamalari</h2>
+                <p className="text-gray-600">Platform sozlamalari, xavfsizlik va tizim konfiguratsiyasi</p>
+              </div>
+              <SystemSettings />
+            </div>
           </TabsContent>
         </Tabs>
       </div>

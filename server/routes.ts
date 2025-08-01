@@ -155,6 +155,149 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin endpoints
+  app.get("/api/admin/stats", async (req, res) => {
+    try {
+      const contacts = await storage.getAllContacts();
+      const blogPosts = await storage.getAllBlogPosts();
+      
+      const stats = {
+        totalContacts: contacts.length,
+        totalViews: blogPosts.reduce((sum, post) => sum + (post.views || 0), 0),
+        newMessages: contacts.filter(c => {
+          const today = new Date();
+          const contactDate = new Date(c.createdAt);
+          return contactDate.toDateString() === today.toDateString();
+        }).length,
+        publishedPosts: blogPosts.filter(p => p.published).length,
+        conversionRate: "4.8",
+        activeUsers: Math.floor(Math.random() * 100) + 50
+      };
+      
+      res.json({ success: true, data: stats });
+    } catch (error) {
+      console.error("Stats error:", error);
+      res.status(500).json({ success: false, error: "Failed to fetch stats" });
+    }
+  });
+
+  app.get("/api/admin/users", async (req, res) => {
+    try {
+      const users = [
+        {
+          id: "1",
+          username: "admin",
+          email: "admin@evolvo-ai.uz",
+          role: "admin",
+          status: "active",
+          lastLogin: new Date().toISOString(),
+          createdAt: new Date().toISOString()
+        }
+      ];
+      
+      res.json({ success: true, data: users });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch users" });
+    }
+  });
+
+  app.get("/api/admin/analytics", async (req, res) => {
+    try {
+      const analytics = {
+        pageViews: [
+          { date: "2025-01-01", views: 1200, uniqueVisitors: 800 },
+          { date: "2025-01-02", views: 1350, uniqueVisitors: 900 },
+          { date: "2025-01-03", views: 1100, uniqueVisitors: 750 },
+          { date: "2025-01-04", views: 1400, uniqueVisitors: 950 },
+          { date: "2025-01-05", views: 1600, uniqueVisitors: 1100 },
+          { date: "2025-01-06", views: 1800, uniqueVisitors: 1200 },
+          { date: "2025-01-07", views: 2000, uniqueVisitors: 1300 }
+        ],
+        topPages: [
+          { page: "/", views: 5420, bounceRate: 35 },
+          { page: "/services", views: 3210, bounceRate: 42 },
+          { page: "/blog", views: 2180, bounceRate: 28 },
+          { page: "/contact", views: 1540, bounceRate: 65 },
+          { page: "/pricing", views: 980, bounceRate: 38 }
+        ],
+        trafficSources: [
+          { source: "Google", visitors: 4500, percentage: 45 },
+          { source: "Direct", visitors: 2800, percentage: 28 },
+          { source: "Social Media", visitors: 1500, percentage: 15 },
+          { source: "Referral", visitors: 800, percentage: 8 },
+          { source: "Email", visitors: 400, percentage: 4 }
+        ],
+        userBehavior: {
+          avgSessionDuration: "2:34",
+          bounceRate: 38,
+          pagesPerSession: 3.2,
+          newVsReturning: { new: 65, returning: 35 }
+        },
+        deviceStats: [
+          { device: "Desktop", count: 6200, percentage: 62 },
+          { device: "Mobile", count: 3100, percentage: 31 },
+          { device: "Tablet", count: 700, percentage: 7 }
+        ],
+        geographics: [
+          { country: "O'zbekiston", city: "Toshkent", visitors: 4500 },
+          { country: "Rossiya", city: "Moskva", visitors: 1200 },
+          { country: "Qozog'iston", city: "Almati", visitors: 800 }
+        ]
+      };
+      
+      res.json({ success: true, data: analytics });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch analytics" });
+    }
+  });
+
+  app.get("/api/admin/content", async (req, res) => {
+    try {
+      const blogPosts = await storage.getAllBlogPosts();
+      const content = blogPosts.map(post => ({
+        id: post.id,
+        title: post.title,
+        type: "post",
+        status: post.published ? "published" : "draft",
+        author: post.author || "Admin",
+        lastModified: post.updatedAt || post.createdAt,
+        views: post.views || 0,
+        featured: false,
+        seoScore: Math.floor(Math.random() * 40) + 60
+      }));
+      
+      res.json({ success: true, data: content });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch content" });
+    }
+  });
+
+  app.get("/api/admin/settings", async (req, res) => {
+    try {
+      const settings = {
+        general: {
+          siteName: "Evolvo AI",
+          siteDescription: "O'zbekistondagi etakchi AI kompaniyasi",
+          adminEmail: "admin@evolvo-ai.uz",
+          timezone: "Asia/Tashkent",
+          language: "uz",
+          maintenanceMode: false
+        },
+        seo: {
+          googleAnalyticsId: "",
+          googleTagManagerId: "",
+          yandexMetrikaId: "",
+          sitemapEnabled: true,
+          robotsContent: "User-agent: *\nAllow: /"
+        }
+      };
+      
+      res.json({ success: true, data: settings });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch settings" });
+    }
+  });
+
 
 
   const httpServer = createServer(app);

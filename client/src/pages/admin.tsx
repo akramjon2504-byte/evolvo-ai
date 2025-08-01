@@ -29,6 +29,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showBlogForm, setShowBlogForm] = useState(false);
   const [isRSSLoading, setIsRSSLoading] = useState(false);
+  const [isTelegramLoading, setIsTelegramLoading] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("admin_authenticated");
@@ -56,6 +57,25 @@ export default function AdminPage() {
       });
     } finally {
       setIsRSSLoading(false);
+    }
+  };
+
+  const handleSendLatestBlogs = async () => {
+    setIsTelegramLoading(true);
+    try {
+      await apiRequest("POST", "/api/admin/send-latest-blogs");
+      toast({
+        title: "Telegram'ga Yuborildi",
+        description: "Eng so'nggi blog postlar @evolvo_ai kanaliga yuborildi"
+      });
+    } catch (error) {
+      toast({
+        title: "Xatolik",
+        description: "Telegram'ga yuborishda xatolik yuz berdi",
+        variant: "destructive"
+      });
+    } finally {
+      setIsTelegramLoading(false);
     }
   };
 
@@ -258,6 +278,15 @@ export default function AdminPage() {
                   >
                     <MessageSquare className="w-4 h-4" />
                     {isRSSLoading ? "RSS Yuklanmoqda..." : "RSS Yukla"}
+                  </Button>
+                  <Button 
+                    variant="secondary"
+                    onClick={() => handleSendLatestBlogs()}
+                    disabled={isTelegramLoading}
+                    className="flex items-center gap-2"
+                  >
+                    <Send className="w-4 h-4" />
+                    {isTelegramLoading ? "Yuborilmoqda..." : "Telegram'ga Yuborish"}
                   </Button>
                 </div>
               </CardHeader>

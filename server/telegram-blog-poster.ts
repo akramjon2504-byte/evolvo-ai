@@ -58,7 +58,7 @@ export class TelegramBlogPoster {
 ${truncatedContent}
 
 📅 ${new Date(post.createdAt).toLocaleDateString('uz-UZ')}
-💬 Batafsil o'qish: https://evolvo-ai.uz/blog/${post.id}
+💬 Batafsil o'qish: https://evolvo-ai.replit.app/blog/${post.id}
 
 #EvolvoAI #AI #Texnologiya #Uzbekistan
     `.trim();

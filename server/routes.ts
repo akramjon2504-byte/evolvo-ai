@@ -164,6 +164,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Telegram blog post yuborish (admin)
+  app.post("/api/admin/send-telegram-blog", async (req, res) => {
+    try {
+      const { TelegramBlogPoster } = await import("./telegram-blog-poster");
+      const telegramPoster = new TelegramBlogPoster();
+      
+      const { postId } = req.body;
+      if (!postId) {
+        res.status(400).json({ success: false, error: "Post ID kerak" });
+        return;
+      }
+
+      await telegramPoster.sendBlogPost(postId);
+      res.json({ success: true, message: "Blog post Telegram kanaliga yuborildi" });
+    } catch (error) {
+      console.error('Telegram blog yuborishda xatolik:', error);
+      res.status(500).json({ success: false, error: "Telegram blog yuborishda xatolik" });
+    }
+  });
+
+  // Eng so'nggi blog postlarni Telegram'ga yuborish (admin)
+  app.post("/api/admin/send-latest-blogs", async (req, res) => {
+    try {
+      const { TelegramBlogPoster } = await import("./telegram-blog-poster");
+      const telegramPoster = new TelegramBlogPoster();
+      
+      await telegramPoster.sendLatestPosts(3);
+      res.json({ success: true, message: "Eng so'nggi blog postlar Telegram kanaliga yuborildi" });
+    } catch (error) {
+      console.error('Telegram blog yuborishda xatolik:', error);
+      res.status(500).json({ success: false, error: "Telegram blog yuborishda xatolik" });
+    }
+  });
+
   // Admin endpoints
   app.get("/api/admin/stats", async (req, res) => {
     try {

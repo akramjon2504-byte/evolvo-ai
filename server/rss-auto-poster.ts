@@ -2,6 +2,7 @@ import RSSParser from 'rss-parser';
 import * as cron from 'node-cron';
 import { storage } from './storage';
 import type { InsertBlogPost } from '@shared/schema';
+import { TelegramBlogPoster } from './telegram-blog-poster';
 
 // RSS manbalar ro'yxati - AI texnologiyalari bo'yicha mashur saytlar
 const RSS_SOURCES = [
@@ -35,9 +36,11 @@ const RSS_SOURCES = [
 class RSSAutoPoster {
   private parser: RSSParser;
   private processedArticles: Set<string> = new Set();
+  private telegramPoster: TelegramBlogPoster;
 
   constructor() {
     this.parser = new RSSParser();
+    this.telegramPoster = new TelegramBlogPoster();
     this.startCronJob();
   }
 
@@ -131,8 +134,15 @@ class RSSAutoPoster {
         published: true
       };
 
-      await storage.createBlogPost(blogPost);
+      const createdPost = await storage.createBlogPost(blogPost);
       console.log(`📝 Yangi maqola yaratildi: ${translatedTitle.substring(0, 50)}...`);
+
+      // Telegram kanaliga avtomatik yuborish
+      if (createdPost?.id) {
+        setTimeout(() => {
+          this.telegramPoster.sendBlogPost(createdPost.id);
+        }, 2000); // 2 soniya kutish
+      }
 
     } catch (error) {
       console.error('❌ Maqola yaratishda xatolik:', error);

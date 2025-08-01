@@ -10,6 +10,7 @@ import Home from "@/pages/home";
 import Admin from "@/pages/admin";
 import AdminLogin from "@/pages/admin-login";
 import NotFound from "@/pages/not-found";
+import BlogPostPage from "@/pages/blog-post";
 
 function ProtectedAdmin() {
   const isAuthenticated = localStorage.getItem("admin_authenticated") === "true";
@@ -20,6 +21,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/blog/:id" component={BlogPostPage} />
       <Route path="/admin" component={ProtectedAdmin} />
       <Route path="/admin-login" component={AdminLogin} />
       <Route component={NotFound} />

@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Contact, type InsertContact, type BlogPost, type InsertBlogPost, type Service, type InsertService, type Testimonial, type InsertTestimonial, users, contacts, blogPosts, services, testimonials } from "@shared/schema";
+import { type User, type InsertUser, type Contact, type InsertContact, type BlogPost, type InsertBlogPost, type Service, type InsertService, type Testimonial, type InsertTestimonial, type EmailLog, type InsertEmailLog, users, contacts, blogPosts, services, testimonials, emailLogs } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, desc } from "drizzle-orm";
 
@@ -23,6 +23,13 @@ export interface IStorage {
   
   getTestimonials(language?: string): Promise<Testimonial[]>;
   createTestimonial(testimonial: InsertTestimonial): Promise<Testimonial>;
+
+  // Email marketing methods
+  addEmailLog(emailLog: InsertEmailLog): Promise<EmailLog>;
+  getEmailLogs(contactId: string): Promise<EmailLog[]>;
+  getAllEmailLogs(): Promise<EmailLog[]>;
+  getAllContacts(): Promise<Contact[]>;
+  getAllBlogPosts(): Promise<BlogPost[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -405,6 +412,28 @@ export class DatabaseStorage implements IStorage {
       .values(insertTestimonial)
       .returning();
     return testimonial;
+  }
+
+  // Email marketing methods
+  async addEmailLog(emailLog: InsertEmailLog): Promise<EmailLog> {
+    const [result] = await db.insert(emailLogs).values(emailLog).returning();
+    return result;
+  }
+
+  async getEmailLogs(contactId: string): Promise<EmailLog[]> {
+    return await db.select().from(emailLogs).where(eq(emailLogs.contactId, contactId)).orderBy(desc(emailLogs.sentAt));
+  }
+
+  async getAllEmailLogs(): Promise<EmailLog[]> {
+    return await db.select().from(emailLogs).orderBy(desc(emailLogs.sentAt));
+  }
+
+  async getAllContacts(): Promise<Contact[]> {
+    return await db.select().from(contacts).orderBy(desc(contacts.createdAt));
+  }
+
+  async getAllBlogPosts(): Promise<BlogPost[]> {
+    return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
   }
 }
 

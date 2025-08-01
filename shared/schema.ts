@@ -56,6 +56,18 @@ export const testimonials = pgTable("testimonials", {
   language: text("language").default("uz"),
 });
 
+export const emailLogs = pgTable("email_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  contactId: text("contact_id").notNull(),
+  email: text("email").notNull(),
+  subject: text("subject").notNull(),
+  content: text("content").notNull(),
+  type: text("type").notNull(), // welcome, educational, offer, etc.
+  status: text("status").notNull().default("sent"), // sent, failed, pending
+  sentAt: timestamp("sent_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -81,6 +93,11 @@ export const insertTestimonialSchema = createInsertSchema(testimonials).omit({
   id: true,
 });
 
+export const insertEmailLogSchema = createInsertSchema(emailLogs).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
@@ -95,3 +112,6 @@ export type Service = typeof services.$inferSelect;
 
 export type InsertTestimonial = z.infer<typeof insertTestimonialSchema>;
 export type Testimonial = typeof testimonials.$inferSelect;
+
+export type InsertEmailLog = z.infer<typeof insertEmailLogSchema>;
+export type EmailLog = typeof emailLogs.$inferSelect;

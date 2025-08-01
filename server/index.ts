@@ -39,6 +39,9 @@ app.use((req, res, next) => {
 (async () => {
   // RSS avtomatik tizimini ishga tushirish
   import("./rss-auto-poster");
+
+  // Email marketing scheduler ni ishga tushirish
+  import("./email-scheduler");
   
   const server = await registerRoutes(app);
 

@@ -35,6 +35,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertContactSchema.parse(req.body);
       const contact = await storage.createContact(validatedData);
+
+      // Email marketing: Xush kelibsiz email yuborish
+      try {
+        const { emailMarketing } = await import("./email-marketing");
+        await emailMarketing.sendWelcomeEmail(contact);
+      } catch (error) {
+        console.error("Xush kelibsiz email yuborishda xatolik:", error);
+      }
+
       res.json({ success: true, data: contact });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -298,7 +307,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Email marketing endpoints
+  app.get("/api/admin/email-stats", async (req, res) => {
+    try {
+      const { emailMarketing } = await import("./email-marketing");
+      const stats = await emailMarketing.getEmailStats();
+      res.json({ success: true, data: stats });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch email stats" });
+    }
+  });
 
+  app.post("/api/admin/send-marketing-emails", async (req, res) => {
+    try {
+      const { emailMarketing } = await import("./email-marketing");
+      await emailMarketing.sendMarketingEmails();
+      res.json({ success: true, message: "Marketing emails sent successfully" });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to send marketing emails" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

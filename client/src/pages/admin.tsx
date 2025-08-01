@@ -18,6 +18,7 @@ import { UserManagement } from "@/components/admin/user-management";
 import { AnalyticsDashboard } from "@/components/admin/analytics-dashboard";
 import { ContentManagement } from "@/components/admin/content-management";
 import { SystemSettings } from "@/components/admin/system-settings";
+import { EmailMarketing } from "@/components/admin/email-marketing";
 import type { Contact, BlogPost, Service, Testimonial } from "@shared/schema";
 
 export default function AdminPage() {
@@ -136,13 +137,14 @@ export default function AdminPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="contacts">Mijozlar</TabsTrigger>
             <TabsTrigger value="blog">Blog</TabsTrigger>
             <TabsTrigger value="content">Kontent</TabsTrigger>
             <TabsTrigger value="users">Foydalanuvchilar</TabsTrigger>
             <TabsTrigger value="analytics">Analitika</TabsTrigger>
+            <TabsTrigger value="email">Email</TabsTrigger>
             <TabsTrigger value="settings">Sozlamalar</TabsTrigger>
           </TabsList>
 
@@ -469,6 +471,17 @@ export default function AdminPage() {
                 <p className="text-gray-600">Sayt statistikasi, foydalanuvchi harakatlari va ko'rsatkichlar</p>
               </div>
               <AnalyticsDashboard />
+            </div>
+          </TabsContent>
+
+          {/* Email Marketing Tab */}
+          <TabsContent value="email">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Email Marketing</h2>
+                <p className="text-gray-600">Avtomatik email kampaniyalari va mijozlar bilan aloqa</p>
+              </div>
+              <EmailMarketing />
             </div>
           </TabsContent>
 

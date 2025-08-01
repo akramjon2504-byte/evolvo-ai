@@ -5,10 +5,13 @@ import { TestimonialsSection } from "@/components/sections/testimonials";
 import { AboutSection } from "@/components/sections/about";
 import { BlogSection } from "@/components/sections/blog";
 import { ContactSection } from "@/components/sections/contact";
+import { SEOHead } from "@/components/seo/head";
 
 export default function Home() {
   return (
-    <main>
+    <>
+      <SEOHead />
+      <main>
       <HeroSection />
       <ServicesSection />
       <SolutionsSection />
@@ -17,5 +20,6 @@ export default function Home() {
       <BlogSection />
       <ContactSection />
     </main>
+    </>
   );
 }

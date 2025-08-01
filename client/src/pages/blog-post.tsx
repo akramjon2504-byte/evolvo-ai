@@ -3,6 +3,7 @@ import { useRoute } from "wouter";
 import { Calendar, User, Tag, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SEOHead } from "@/components/seo/head";
 import type { BlogPost } from "@shared/schema";
 
 export default function BlogPostPage() {
@@ -52,7 +53,9 @@ export default function BlogPostPage() {
   const post = blogPost.data;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-20">
+    <>
+      <SEOHead blogPost={post} />
+      <div className="min-h-screen bg-gray-50 py-20">
       <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
         <Button 
           variant="ghost" 
@@ -156,5 +159,6 @@ export default function BlogPostPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

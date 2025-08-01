@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { Trash2, Edit, Plus, Eye, EyeOff, Calendar, User, Mail, MessageSquare, LogOut, Home } from "lucide-react";
 import { BlogForm } from "@/components/admin/blog-form";
+import { SEOHead } from "@/components/seo/head";
 import type { Contact, BlogPost, Service, Testimonial } from "@shared/schema";
 
 export default function AdminPage() {
@@ -94,7 +95,13 @@ export default function AdminPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+    <>
+      <SEOHead 
+        title="Evolvo AI - Admin Panel"
+        description="Evolvo AI platformasi uchun administrator paneliga kirish. Tizim boshqaruvi va kontentni yangilash."
+        url="https://evolvo-ai.replit.app/admin"
+      />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex justify-between items-center">
           <div>
@@ -429,5 +436,6 @@ export default function AdminPage() {
       
       {showBlogForm && <BlogForm onClose={() => setShowBlogForm(false)} />}
     </div>
+    </>
   );
 }

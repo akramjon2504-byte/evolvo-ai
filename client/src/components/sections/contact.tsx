@@ -11,11 +11,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { SuccessModal } from "@/components/ui/success-modal";
+import { FadeIn } from "@/components/ui/fade-in";
 
 export function ContactSection() {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema.extend({
@@ -38,10 +41,7 @@ export function ContactSection() {
       return await apiRequest("POST", "/api/contact", data);
     },
     onSuccess: () => {
-      toast({
-        title: "Muvaffaqiyat!",
-        description: t("contact.form.success"),
-      });
+      setShowSuccess(true);
       form.reset();
       queryClient.invalidateQueries({ queryKey: ['/api/contacts'] });
     },
@@ -61,12 +61,12 @@ export function ContactSection() {
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-16">
+        <FadeIn className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{t("contact.title")}</h2>
           <p className="text-xl text-gray-600">
             {t("contact.subtitle")}
           </p>
-        </div>
+        </FadeIn>
 
         <div className="grid lg:grid-cols-2 gap-16">
           <div>
@@ -239,6 +239,13 @@ export function ContactSection() {
           </div>
         </div>
       </div>
+      
+      <SuccessModal 
+        isOpen={showSuccess} 
+        onClose={() => setShowSuccess(false)}
+        title="Muvaffaqiyatli yuborildi!"
+        message="Sizning so'rovingiz qabul qilindi. Tez orada mutaxassislarimiz siz bilan bog'lanishadi va bepul konsultatsiya taklif qilishadi."
+      />
     </section>
   );
 }

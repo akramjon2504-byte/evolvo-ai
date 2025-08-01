@@ -12,7 +12,7 @@ export function HeroSection() {
   };
 
   return (
-    <section id="home" className="relative bg-gradient-to-br from-blue-50 to-white py-20 lg:py-32">
+    <section id="hero" className="relative bg-gradient-to-br from-blue-50 to-white py-20 lg:py-32 mt-16">
       <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-cyan-500/5"></div>
       <div className="container mx-auto px-4 lg:px-8 relative">
         <div className="grid lg:grid-cols-2 gap-12 items-center">

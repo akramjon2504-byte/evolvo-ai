@@ -106,6 +106,8 @@ export const seoTitles = {
   uz: {
     home: "Evolvo AI - O'zbekistonda Eng Yaxshi Sun'iy Intellekt Xizmatlari | AI Yechimlar",
     services: "AI Xizmatlari - Chatbot, Ma'lumotlar Tahlili, Biznes Avtomatlashtirish | Evolvo AI",
+    portfolio: "Portfolio - Evolvo AI Loyihalar va Muvaffaqiyatlar | Bizning Ishlarimiz",
+    'ai-demo': "AI Demo - Interaktiv Sun'iy Intellekt va Ovozli Qidiruv | Evolvo AI",
     blog: "AI Blog - Sun'iy Intellekt Yangiliklari va Maslahatlar | Evolvo AI",
     pricing: "AI Xizmatlari Narxlari - Professional Sun'iy Intellekt Yechimlar | Evolvo AI",
     contact: "Aloqa - Bepul AI Konsultatsiya | Evolvo AI O'zbekiston"
@@ -130,6 +132,8 @@ export const seoDescriptions = {
   uz: {
     home: "O'zbekistonda etakchi AI kompaniyasi Evolvo AI. Chatbot yaratish, ma'lumotlar tahlili, biznes avtomatlashtirish xizmatlari. Bepul konsultatsiya va professional yechimlar.",
     services: "Professional sun'iy intellekt xizmatlari: AI chatbot yaratish, ma'lumotlar tahlili, biznes jarayonlarini avtomatlashtirish. O'zbekiston bozorida tajribali mutaxassislar.",
+    portfolio: "Evolvo AI tomonidan amalga oshirilgan loyihalar portfoliosi. Mijozlar fikrlari, kompaniya haqida ma'lumotlar va muvaffaqiyatli AI yechimlar. O'zbekiston bozorida natijaviy ishlar.",
+    'ai-demo': "Evolvo AI'ning interaktiv AI demo va ovozli qidiruv texnologiyalarini sinab ko'ring. O'zbek tilida AI chatbot va zamonaviy ovozli interfeys imkoniyatlari bepul.",
     blog: "Sun'iy intellekt sohasidagi so'nggi yangiliklar, maslahatlar va tendentsiyalar. AI texnologiyalari, mashina o'rganish va raqamli transformatsiya haqida maqolalar.",
     pricing: "Evolvo AI xizmatlari narxlari: Boshlang'ich, Professional va Korporativ tariflar. Har qanday biznes hajmi uchun mos AI yechimlar. 14 kunlik bepul sinov.",
     contact: "Evolvo AI bilan bog'laning va bepul konsultatsiya oling. Professional AI xizmatlari bo'yicha maslahat va individual yechimlar. O'zbekiston bo'ylab xizmat."

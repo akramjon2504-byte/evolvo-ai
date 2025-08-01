@@ -11,7 +11,7 @@ interface SEOHeadProps {
   url?: string;
   type?: "website" | "article";
   blogPost?: BlogPost;
-  page?: 'home' | 'services' | 'blog' | 'pricing' | 'contact';
+  page?: 'home' | 'services' | 'blog' | 'pricing' | 'contact' | 'portfolio' | 'ai-demo';
 }
 
 export function SEOHead({ 

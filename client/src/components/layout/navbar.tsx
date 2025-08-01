@@ -2,15 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Rocket } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { Link } from "wouter";
 
 const navItems = [
-  { name: "Bosh sahifa", href: "#hero" },
-  { name: "Xizmatlar", href: "#services" },
-  { name: "Yechimlar", href: "#solutions" },
-  { name: "Biz haqimizda", href: "#about" },
-  { name: "Blog", href: "#blog" },
-  { name: "Narxlar", href: "#pricing" },
-  { name: "Aloqa", href: "#contact" }
+  { name: "Bosh sahifa", href: "/", isLink: true },
+  { name: "Xizmatlar", href: "/services", isLink: true },
+  { name: "AI Demo", href: "/ai-demo", isLink: true },
+  { name: "Portfolio", href: "/portfolio", isLink: true },
+  { name: "Blog", href: "#blog", isLink: false },
+  { name: "Aloqa", href: "#contact", isLink: false }
 ];
 
 export function Navbar() {
@@ -43,13 +43,23 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="text-gray-700 hover:text-evolvo-blue transition-colors duration-200 font-medium"
-              >
-                {item.name}
-              </button>
+              item.isLink ? (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-700 hover:text-evolvo-blue transition-colors duration-200 font-medium"
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-gray-700 hover:text-evolvo-blue transition-colors duration-200 font-medium"
+                >
+                  {item.name}
+                </button>
+              )
             ))}
           </div>
 
@@ -90,13 +100,24 @@ export function Navbar() {
           <div className="lg:hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-100 shadow-lg">
             <div className="px-4 py-4 space-y-3">
               {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className="block w-full text-left text-gray-700 hover:text-evolvo-blue py-2 transition-colors"
-                >
-                  {item.name}
-                </button>
+                item.isLink ? (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block w-full text-left text-gray-700 hover:text-evolvo-blue py-2 transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  <button
+                    key={item.name}
+                    onClick={() => scrollToSection(item.href)}
+                    className="block w-full text-left text-gray-700 hover:text-evolvo-blue py-2 transition-colors"
+                  >
+                    {item.name}
+                  </button>
+                )
               ))}
               
               <div className="pt-4 border-t border-gray-100 space-y-3">

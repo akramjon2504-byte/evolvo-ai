@@ -47,7 +47,7 @@ Comprehensive admin interface with authentication:
 - **Blog Management**: Create, publish/unpublish, and manage blog posts
 - **Content Overview**: View services and testimonials
 - **Email Marketing**: Complete automation system with 30-day templates and OpenAI personalization
-- **Telegram Marketing**: Bot integration with automated messaging and subscriber management
+- **Telegram AI Assistant**: Professional AI customer service bot (@vertextestai_bot) with intelligent responses
 - **Security**: Protected routes with localStorage-based auth
 - **RSS Integration**: Manual RSS sync functionality for automated content generation
 
@@ -69,9 +69,9 @@ RESTful API endpoints under `/api/`:
 - `GET /api/blog/:id` - Individual blog post
 - `GET /api/admin/email-stats` - Email marketing statistics
 - `POST /api/admin/send-marketing-emails` - Manual marketing email trigger
-- `GET /api/admin/telegram-stats` - Telegram bot statistics
-- `POST /api/admin/send-telegram-test` - Test Telegram message
-- `POST /api/admin/send-telegram-marketing` - Manual Telegram marketing
+- `GET /api/admin/telegram-stats` - Telegram AI assistant statistics
+- `POST /api/admin/send-telegram-test` - Test AI assistant responses
+- `POST /api/admin/send-telegram-marketing` - Manual marketing campaigns
 - Service and testimonial endpoints (implemented in storage layer)
 
 ### Internationalization

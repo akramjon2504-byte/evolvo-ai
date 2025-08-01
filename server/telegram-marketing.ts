@@ -90,12 +90,13 @@ class TelegramMarketing {
   private setupBotCommands() {
     if (!this.bot) return;
 
-    // /start command
+    // /start - AI Assistant bilan tanishish
     this.bot.onText(/\/start/, (msg) => {
       const chatId = msg.chat.id;
       const username = msg.from?.username;
+      const firstName = msg.from?.first_name || '';
       
-      // Foydalanuvchini ro'yxatga olish
+      // Mijozni ro'yxatga olish
       this.subscribers.set(chatId, {
         chatId,
         username,
@@ -103,48 +104,77 @@ class TelegramMarketing {
         subscribeDate: new Date()
       });
 
-      const welcomeMessage = `🤖 Assalomu alaykum! Evolvo AI botiga xush kelibsiz!
+      const welcomeMessage = `👋 Salom ${firstName}! Men Evolvo AI kompaniyasining AI assistentiman.
 
-🚀 Biz O'zbekistondagi eng yirik AI kompaniyasimiz va sizning biznesingizni raqamlashtirish uchun zamonaviy yechimlar taklif qilamiz.
+🤖 **Men sizga qanday yordam bera olaman:**
+• Kompaniya xizmatlarimiz haqida to'liq ma'lumot
+• AI yechimlar bo'yicha maslahat  
+• Biznes raqamlashtirish jarayonida yo'l-yo'riq
+• Texnik savollaringizga javob
+• Loyiha narxlarini hisoblash
 
-📝 Buyruqlar:
-/services - Xizmatlarimiz haqida
-/contact - Bog'lanish
-/language - Tilni o'zgartirish
-/unsubscribe - Obunani bekor qilish
+📋 **Asosiy buyruqlar:**
+/services - Barcha xizmatlarimiz
+/ai_help - AI bo'yicha maslahat
+/pricing - Narxlar va tariflar
+/contact - Bog'lanish va konsultatsiya
+/language - Tilni o'zgartirish (🇺🇿/🇷🇺)
 
-💡 Avtomatik yangiliklar olish uchun obuna bo'ldingiz!`;
+💬 **Shunchaki yozing va men javob beraman!**
+Masalan: "CRM tizim kerak" yoki "Veb-sayt narxi qancha?"
+
+✨ Sizga foydali AI yangiliklari va maslahatlar yuboraman!`;
 
       this.bot?.sendMessage(chatId, welcomeMessage);
+      console.log(`✅ Yangi mijoz: ${username || firstName} (${chatId})`);
     });
 
-    // /services command
+    // /services - Barcha xizmatlar
     this.bot.onText(/\/services/, (msg) => {
       const chatId = msg.chat.id;
-      const servicesMessage = `🔥 Evolvo AI xizmatlarimiz:
+      const servicesMessage = `🔥 Evolvo AI to'liq xizmatlar katalogi:
 
-🤖 AI Chatbotlar
-• 24/7 mijozlar bilan muloqot
-• Ko'p tilli qo'llab-quvvatlash
-• CRM integratsiyasi
+**🤖 AI Chatbot yechimlar**
+• 24/7 mijozlar xizmati boti
+• Ko'p tilli qo'llab-quvvatlash (O'zbek, Rus, Ingliz)
+• CRM va Telegram integratsiya
+• Savdo botlari va buyurtma qabul qilish
+• Narxi: $299-999/oy
 
-📊 Ma'lumotlar tahlili
-• Business Intelligence dashboardlar
-• Predictive analytics
-• Hisobotlar avtomatizatsiyasi
+**📊 Ma'lumotlar tahlili va Business Intelligence**
+• Savdo hisobotlari va analytics
+• Mijozlar xatti-harakati tahlili
+• Prognoz va trenda tahlili
+• Real-time dashboardlar
+• Narxi: $199-799/oy
 
-⚡ Avtomatlashtirish
+**⚡ Biznes avtomatizatsiya**
+• Email marketing avtomatizatsiyasi
+• Hujjatlar qayta ishlash (OCR, AI parsing)
 • Ish jarayonlarini optimallashtirish
-• Document processing
-• Email marketing
+• CRM va ERP integratsiya
+• Narxi: $149-599/oy
 
-💼 AI Consulting
+**💻 Veb-sayt va digital yechimlar**
+• AI-powered veb-saytlar
+• E-commerce platformalar
+• Mobile ilovalar (iOS/Android)
+• SEO va digital marketing
+• Narxi: $299-1299
+
+**🎓 AI konsalting va training**
 • Digital transformation strategiyasi
-• AI roadmap yaratish
-• Team training
+• Jamoa uchun AI training
+• Custom AI modellar yaratish
+• Texnik qo'llab-quvvatlash 24/7
+• Narxi: $99-299/soat
 
-📞 Bepul konsultatsiya: +998 90 123 45 67
-🌐 Sayt: evolvo-ai.uz`;
+**🎁 Maxsus takliflar:**
+• Birinchi loyiha - 50% chegirma
+• To'liq paket olganlar - 30% tejamkorlik
+• Bepul konsultatsiya va demo
+
+Qaysi xizmat sizni qiziqtiradi? /pricing da narxlarni ko'ring yoki savolingizni yozing! 💬`;
 
       this.bot?.sendMessage(chatId, servicesMessage);
     });
@@ -205,6 +235,191 @@ class TelegramMarketing {
           : "✅ Язык изменен на русский";
 
         this.bot?.sendMessage(chatId, response);
+      }
+    });
+
+    // /ai_help - AI bo'yicha maslahat
+    this.bot.onText(/\/ai_help/, (msg) => {
+      const chatId = msg.chat.id;
+      const aiHelpMessage = `🧠 AI bo'yicha maslahat va yo'l-yo'riq:
+
+**🎯 Biznesingiz uchun AI yechimlar:**
+• Chatbot - mijozlar bilan 24/7 muloqot
+• CRM avtomatizatsiya - mijozlar bazasini boshqarish  
+• Ma'lumotlar tahlili - biznes hisobotlari
+• Email marketing - avtomatik xat yuborish
+• Document processing - hujjatlarni avtomatik qayta ishlash
+
+**💡 Qaysi AI yechim sizga mos?**
+• Savdo uchun: CRM + Chatbot
+• Xizmat ko'rsatish: Chatbot + Analytics
+• Marketing: Email automation + Analytics
+• Ishlab chiqarish: Document processing + Analytics
+
+**📊 AI joriy qilishning bosqichlari:**
+1. Biznes ehtiyojlarini aniqlash
+2. Tegishli AI vositasini tanlash
+3. Ma'lumotlarni tayyorlash
+4. Tizimni sozlash va test qilish
+5. Jamoani o'qitish va qo'llab-quvvatlash
+
+Qo'shimcha savol yozing! 💬`;
+
+      this.bot?.sendMessage(chatId, aiHelpMessage);
+    });
+
+    // /pricing - Narxlar va tariflar
+    this.bot.onText(/\/pricing/, (msg) => {
+      const chatId = msg.chat.id;
+      const pricingMessage = `💰 Evolvo AI xizmatlar narxlari:
+
+**🤖 AI Chatbot paketi:**
+• Oddiy: $299/oy - 1000 chat/oy
+• Professional: $599/oy - 5000 chat/oy  
+• Enterprise: $999/oy - cheksiz chat
+
+**📊 Ma'lumotlar tahlili:**
+• Asosiy: $199/oy - 5 dashboard
+• Kengaytirilgan: $399/oy - 15 dashboard
+• To'liq: $799/oy - cheksiz dashboard
+
+**⚡ Avtomatlashtirish paketi:**
+• Boshlang'ich: $149/oy - 3 jarayon
+• O'rta: $299/oy - 10 jarayon
+• Mukammal: $599/oy - cheksiz jarayon
+
+**🎁 Maxsus takliflar:**
+• Birinchi 3 oy - 50% chegirma
+• Yillik to'lov - 20% tejamkorlik
+• To'liq paket - 30% chegirma
+
+**🆓 Bepul konsultatsiya va demo!**
+/contact orqali bog'laning yoki shunchaki savolingizni yozing.
+
+Qaysi paket sizni qiziqtiradi? 🤔`;
+
+      this.bot?.sendMessage(chatId, pricingMessage);
+    });
+
+    // Oddiy matn xabarlariga javob (AI Assistant rejimi)
+    this.bot.on('message', async (msg) => {
+      // Buyruqlarni e'tiborsiz qoldirish
+      if (msg.text?.startsWith('/')) return;
+      
+      const chatId = msg.chat.id;
+      const userMessage = msg.text?.toLowerCase() || '';
+      const firstName = msg.from?.first_name || 'Do\'st';
+
+      // AI Assistant javoblari
+      let response = '';
+
+      if (userMessage.includes('crm') || userMessage.includes('mijoz') || userMessage.includes('customer')) {
+        response = `👋 ${firstName}, CRM tizimi haqida so'radingiz!
+
+🎯 **Bizning CRM yechimimiz:**
+• Mijozlar ma'lumotlari bazasi
+• Automatik email yuborish
+• Savdo hisobotlari va analytics
+• Telegram/WhatsApp integratsiya
+• Mobile app bilan ishlash
+
+💰 **Narx:** $299-999/oy (paketga bog'liq)
+⏱️ **Joriy qilish:** 2-4 hafta
+📈 **Natija:** 40% savdo o'sishi
+
+Batafsil ma'lumot uchun /pricing ni bosing yoki to'g'ridan-to'g'ri savolingizni yozing!`;
+      }
+      else if (userMessage.includes('veb') || userMessage.includes('sayt') || userMessage.includes('website')) {
+        response = `💻 ${firstName}, veb-sayt yaratish haqida!
+
+🚀 **Bizning veb-sayt turlari:**
+• Biznes-kard sayt - $299 
+• Korporativ sayt - $599
+• E-commerce sayt - $999
+• AI-powered sayt - $1299
+
+✨ **Barcha saytlarda:**
+• Professional dizayn
+• Mobile-friendly
+• SEO optimizatsiya
+• AI chatbot
+• Analytics va hisobotlar
+
+⚡ **Qo'shimcha xizmatlar:**
+• Logo dizayn - $99
+• Content yozish - $199  
+• SEO promotion - $299/oy
+
+Qanday sayt kerak? Batafsil gaplashaylik! 💬`;
+      }
+      else if (userMessage.includes('narx') || userMessage.includes('cost') || userMessage.includes('price')) {
+        response = `💰 ${firstName}, narxlar haqida!
+
+Xizmatlarimiz narxlari loyiha murakkabligiga bog'liq:
+
+📊 **Boshlang'ich paketlar:**
+• AI Chatbot - $299/oy
+• CRM tizim - $399/oy  
+• Veb-sayt - $299-1299
+
+🎯 **To'liq yechimlar:**
+• Kichik biznes - $799/oy
+• O'rta biznes - $1499/oy
+• Yirik korxona - $2999/oy
+
+🎁 **Chegirmalar:**
+• Birinchi mijozlar - 50%
+• Yillik to'lov - 20% 
+• To'liq paket - 30%
+
+Aniq narx uchun loyihangizni tasvirlab bering! /contact orqali ham bog'lanishingiz mumkin.`;
+      }
+      else if (userMessage.includes('boshla') || userMessage.includes('start') || userMessage.includes('help')) {
+        response = `🚀 ${firstName}, boshlash uchun qadamlar:
+
+1️⃣ **Ehtiyojni aniqlash** (5 daqiqa)
+   Sizga qanday AI yechim kerak?
+
+2️⃣ **Bepul konsultatsiya** (30 daqiqa)
+   Mutaxassislarimiz bilan gaplashish
+
+3️⃣ **Demo ko'rish** (15 daqiqa)  
+   Yechimni amalda ko'rish
+
+4️⃣ **Taklif olish** (1 kun)
+   Aniq narx va muddat
+
+5️⃣ **Loyihani boshlash** (1 hafta)
+   Rasmiy shartnoma va boshlanish
+
+📞 **Hoziroq boshlash uchun:**
+/contact - bog'lanish ma'lumotlari
+Yoki savolingizni yozing, men javob beraman! 💬`;
+      }
+      else if (userMessage.length > 10) {
+        // Oddiy savollar uchun umumiy javob
+        response = `🤖 ${firstName}, savolingiz uchun rahmat!
+
+Men Evolvo AI kompaniyasining AI assistentiman. Sizga quyidagilar bo'yicha yordam bera olaman:
+
+🔥 **Mavzular:**
+• AI chatbot va avtomatlashtirish
+• CRM va mijozlar boshqaruvi  
+• Veb-sayt va e-commerce
+• Ma'lumotlar tahlili
+• Digital marketing
+
+📋 **Foydali buyruqlar:**
+/services - barcha xizmatlar
+/pricing - narxlar
+/ai_help - AI bo'yicha maslahat
+/contact - bog'lanish
+
+Agar savolingiz boshqa mavzuda bo'lsa, batafsil yozib yuboring - men sizga yordam berishga harakat qilaman! 💪`;
+      }
+
+      if (response && !msg.text?.startsWith('/')) {
+        await this.bot?.sendMessage(chatId, response);
       }
     });
 

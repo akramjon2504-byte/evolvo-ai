@@ -7,6 +7,10 @@ import { BlogSection } from "@/components/sections/blog";
 import { PricingSection } from "@/components/sections/pricing";
 import { ContactSection } from "@/components/sections/contact";
 import { FloatingContact } from "@/components/sections/floating-contact";
+import { AIDemoSection } from "@/components/sections/ai-demo";
+import { ProjectCalculatorSection } from "@/components/sections/calculator";
+import { VoiceSearchSection } from "@/components/sections/voice-search";
+import { PortfolioShowcaseSection } from "@/components/sections/portfolio-showcase";
 import { Navbar } from "@/components/layout/navbar";
 import { SEOHead } from "@/components/seo/head";
 import { SchemaData } from "@/components/seo/schema-data";
@@ -20,7 +24,11 @@ export default function Home() {
       <main>
       <HeroSection />
       <ServicesSection />
+      <AIDemoSection />
+      <VoiceSearchSection />
       <SolutionsSection />
+      <ProjectCalculatorSection />
+      <PortfolioShowcaseSection />
       <TestimonialsSection />
       <AboutSection />
       <BlogSection />

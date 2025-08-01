@@ -328,6 +328,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Telegram blog poster endpoints
+  app.post("/api/admin/send-blog-to-channel", async (req, res) => {
+    try {
+      const { postId } = req.body;
+      const { telegramBlogPoster } = await import("./telegram-blog-poster");
+      
+      if (postId) {
+        await telegramBlogPoster.sendBlogPost(postId);
+        res.json({ success: true, message: "Blog post sent to channel successfully" });
+      } else {
+        await telegramBlogPoster.sendLatestPosts();
+        res.json({ success: true, message: "Latest blog posts sent to channel successfully" });
+      }
+    } catch (error) {
+      console.error("Blog to channel error:", error);
+      res.status(500).json({ success: false, error: "Failed to send blog to channel" });
+    }
+  });
+
+  app.get("/api/admin/telegram-channel-stats", async (req, res) => {
+    try {
+      const { telegramBlogPoster } = await import("./telegram-blog-poster");
+      const stats = await telegramBlogPoster.getChannelStats();
+      res.json({ success: true, data: stats });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to fetch channel stats" });
+    }
+  });
+
+  app.post("/api/admin/test-telegram-channel", async (req, res) => {
+    try {
+      const { telegramBlogPoster } = await import("./telegram-blog-poster");
+      const success = await telegramBlogPoster.sendTestMessage();
+      
+      if (success) {
+        res.json({ success: true, message: "Test message sent successfully" });
+      } else {
+        res.status(500).json({ success: false, error: "Failed to send test message" });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to send test message" });
+    }
+  });
+
   // Telegram marketing endpoints
   app.get("/api/admin/telegram-stats", async (req, res) => {
     try {

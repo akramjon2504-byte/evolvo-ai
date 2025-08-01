@@ -20,6 +20,7 @@ import { ContentManagement } from "@/components/admin/content-management";
 import { SystemSettings } from "@/components/admin/system-settings";
 import { EmailMarketing } from "@/components/admin/email-marketing";
 import { TelegramMarketing } from "@/components/admin/telegram-marketing";
+import { TelegramBlogSection } from "@/components/admin/telegram-blog";
 import type { Contact, BlogPost, Service, Testimonial } from "@shared/schema";
 
 export default function AdminPage() {
@@ -138,7 +139,7 @@ export default function AdminPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-10">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="contacts">Mijozlar</TabsTrigger>
             <TabsTrigger value="blog">Blog</TabsTrigger>
@@ -147,6 +148,7 @@ export default function AdminPage() {
             <TabsTrigger value="analytics">Analitika</TabsTrigger>
             <TabsTrigger value="email">Email</TabsTrigger>
             <TabsTrigger value="telegram">Telegram</TabsTrigger>
+            <TabsTrigger value="telegram-blog">Blog Kanal</TabsTrigger>
             <TabsTrigger value="settings">Sozlamalar</TabsTrigger>
           </TabsList>
 
@@ -495,6 +497,13 @@ export default function AdminPage() {
                 <p className="text-gray-600">Telegram bot va avtomatik xabar yuborish tizimi</p>
               </div>
               <TelegramMarketing />
+            </div>
+          </TabsContent>
+
+          {/* Telegram Blog Tab */}
+          <TabsContent value="telegram-blog">
+            <div className="space-y-6">
+              <TelegramBlogSection />
             </div>
           </TabsContent>
 

@@ -8,6 +8,11 @@ Evolvo AI is a modern web platform designed for business digitalization and AI s
 
 Preferred communication style: Simple, everyday language.
 
+## Company Contact Information
+- Phone: +998974771229
+- Address: Toshkent shahri, Olmazor tumani, Nurafshon 12
+- Updated: August 1, 2025
+
 ## System Architecture
 
 ### Frontend Architecture

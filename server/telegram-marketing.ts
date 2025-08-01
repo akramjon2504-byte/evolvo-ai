@@ -187,8 +187,8 @@ Qaysi xizmat sizni qiziqtiradi? /pricing da narxlarni ko'ring yoki savolingizni 
       const chatId = msg.chat.id;
       const contactMessage = `📞 Evolvo AI bilan bog'lanish:
 
-🏢 Ofis: Toshkent sh., Yunusobod tumani
-📱 Telefon: +998 90 123 45 67
+🏢 Manzil: Toshkent shahri, Olmazor tumani, Nurafshon 12
+📱 Telefon: +998974771229
 📧 Email: info@evolvo-ai.uz
 🌐 Website: https://evolvo-ai.uz
 💬 Telegram: @evolvo_ai_uz
@@ -412,6 +412,10 @@ Men Evolvo AI kompaniyasining AI assistentiman. Sizga quyidagilar bo'yicha yorda
 • Ma'lumotlar tahlili
 • Digital marketing
 
+📞 **Bog'lanish ma'lumotlari:**
+• Telefon: +998974771229
+• Manzil: Toshkent, Olmazor tumani, Nurafshon 12
+
 📋 **Foydali buyruqlar:**
 /services - barcha xizmatlar
 /pricing - narxlar
@@ -620,7 +624,8 @@ ${message}`;
 
 🎁 **Maxsus taklif:** Birinchi 3 oy - 50% chegirma!
 
-📞 Demo ko'rish uchun: /contact
+📞 Bog'lanish: +998974771229
+📍 Manzil: Toshkent, Olmazor tumani, Nurafshon 12
 💬 Savollaringiz bo'lsa, shunchaki yozing!`,
 
       'WEBSITE_FOLLOW_UP': `🌐 ${firstName}, veb-sayt yaratish bo'yicha maxsus taklifimiz!
@@ -634,7 +639,8 @@ ${message}`;
 
 🚀 **Yana 48 soat ichida:** 30% chegirma!
 
-📋 Portfolio ko'rish: evolvo-ai.uz/portfolio
+📞 Bog'lanish: +998974771229
+📍 Manzil: Toshkent, Olmazor tumani, Nurafshon 12
 💬 Batafsil gaplashaylik!`,
 
       'PRICING_FOLLOW_UP': `💰 ${firstName}, narxlar haqida batafsil ma'lumot!
@@ -649,7 +655,8 @@ ${message}`;
 • To'liq paket - 30% qo'shimcha chegirma
 • Bepul konsultatsiya va demo
 
-📞 Aniq narx olish: /contact
+📞 Bog'lanish: +998974771229
+📍 Manzil: Toshkent, Olmazor tumani, Nurafshon 12
 💼 Loyihangizni tasvirlab bering, biz taklif tayyorlaymiz!`
       };
 

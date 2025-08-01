@@ -76,9 +76,9 @@ AGAR 404 XATOLIK CHIQSA:
 4. Olingan yangi tokenni Replit Secrets ga qo'shing
 
 HAQIQIY BOT TEST QILISH:
-1. Telegram'da botingizni toping (@your_bot_username)
-2. /start buyrug'ini yuboring
-3. Bot javob berishini tekshiring
+1. Telegram'da @vertextestai_bot ni toping
+2. /start buyrug'ini yuboring  
+3. Bot javob berishini va obuna bo'lishini tekshiring
 
 BOT BUYRUQLARI:
 /start - Botni boshlash va obuna bo'lish
@@ -193,7 +193,7 @@ ADMIN PANEL ORQALI TEST:
                     <Badge variant="outline" className="bg-green-100 text-green-800">Faol</Badge>
                   </div>
                   <p className="text-sm text-gray-600 mb-3">
-                    Telegram bot muvaffaqiyatli ishga tushdi va buyruqlarni qabul qilyapti.
+                    Bot: @vertextestai_bot (vertextest) - muvaffaqiyatli ishga tushdi va buyruqlarni qabul qilyapti.
                   </p>
                   <Button onClick={copyBotInfo} variant="outline" className="w-full">
                     <Copy className="w-4 h-4 mr-2" />

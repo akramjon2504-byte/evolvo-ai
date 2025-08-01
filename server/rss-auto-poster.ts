@@ -37,17 +37,30 @@ class RSSAutoPoster {
   private parser: RSSParser;
   private processedArticles: Set<string> = new Set();
   private telegramPoster: TelegramBlogPoster;
+  private dailyPostCount: number = 0;
+  private lastResetDate: string = '';
 
   constructor() {
     this.parser = new RSSParser();
     this.telegramPoster = new TelegramBlogPoster();
+    this.resetDailyCountIfNeeded();
     this.startCronJob();
   }
 
-  // Har 6 soatda bir RSS ni tekshirish
+  private resetDailyCountIfNeeded() {
+    const today = new Date().toDateString();
+    if (this.lastResetDate !== today) {
+      this.dailyPostCount = 0;
+      this.lastResetDate = today;
+      console.log('📅 Kunlik post hisoblagichi yangilandi');
+    }
+  }
+
+  // Har soatda RSS ni tekshirish va maksimal 10 ta post
   private startCronJob() {
-    cron.schedule('0 */6 * * *', () => {
+    cron.schedule('0 * * * *', () => {
       console.log('🔄 RSS avtomatik post yaratish boshlandi...');
+      this.resetDailyCountIfNeeded();
       this.processAllRSSFeeds();
     });
 
@@ -59,11 +72,22 @@ class RSSAutoPoster {
   }
 
   private async processAllRSSFeeds() {
+    // Kunlik limit tekshiruvi
+    if (this.dailyPostCount >= 10) {
+      console.log('📊 Kunlik post limiti (10) to\'ldi, keyingi kunga qadar kutiladi');
+      return;
+    }
+
     for (const source of RSS_SOURCES) {
+      if (this.dailyPostCount >= 10) {
+        console.log('📊 Kunlik limit to\'ldi, jarayon to\'xtatildi');
+        break;
+      }
+
       try {
         await this.processSingleRSSFeed(source);
-        // Har bir manba o'rtasida 2 soniya kutish
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Har bir manba o'rtasida 5 soniya kutish
+        await new Promise(resolve => setTimeout(resolve, 5000));
       } catch (error) {
         console.error(`❌ RSS xatolik ${source.name}:`, error);
       }
@@ -75,20 +99,28 @@ class RSSAutoPoster {
       console.log(`📡 ${source.name} yuklanmoqda...`);
       const feed = await this.parser.parseURL(source.url);
 
-      // Eng yangi 3 ta maqolani olish
-      const recentItems = feed.items.slice(0, 3);
+      // Faqat 1 ta eng yangi maqolani olish (kunlik limit uchun)
+      const recentItems = feed.items.slice(0, 1);
 
       for (const item of recentItems) {
         if (!item.link || this.processedArticles.has(item.link)) {
           continue;
         }
 
+        if (this.dailyPostCount >= 10) {
+          console.log('📊 Kunlik limit to\'ldi, maqola yaratish to\'xtatildi');
+          break;
+        }
+
         // Maqola yaratish
         await this.createBlogPostFromRSSItem(item, source);
         this.processedArticles.add(item.link);
+        this.dailyPostCount++;
         
-        // Har bir maqola o'rtasida 1 soniya kutish
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log(`📊 Bugun yaratilgan postlar: ${this.dailyPostCount}/10`);
+        
+        // Har bir maqola o'rtasida 10 soniya kutish
+        await new Promise(resolve => setTimeout(resolve, 10000));
       }
 
       console.log(`✅ ${source.name} muvaffaqiyatli yakunlandi`);
@@ -118,9 +150,8 @@ class RSSAutoPoster {
       const translatedContent = await this.translateToUzbek(cleanContent);
       const excerpt = translatedContent.substring(0, 200) + '...';
 
-      // Rasm URL ni topish
-      const imageUrl = this.extractImageUrl(item) || 
-        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400';
+      // RSS'dan rasm URL ni topish
+      const imageUrl = this.extractImageUrl(item);
 
       // Blog post yaratish
       const blogPost: InsertBlogPost = {
@@ -137,11 +168,14 @@ class RSSAutoPoster {
       const createdPost = await storage.createBlogPost(blogPost);
       console.log(`📝 Yangi maqola yaratildi: ${translatedTitle.substring(0, 50)}...`);
 
-      // Telegram kanaliga avtomatik yuborish
+      // Telegram kanaliga avtomatik yuborish (1 soat oraliqda)
       if (createdPost?.id) {
+        // 1 soat = 3600000 millisekund
+        const randomDelay = Math.floor(Math.random() * 3600000); // 0-3600 soniya orasida tasodifiy
         setTimeout(() => {
           this.telegramPoster.sendBlogPost(createdPost.id);
-        }, 2000); // 2 soniya kutish
+          console.log(`📢 Telegram'ga ${Math.floor(randomDelay/60000)} daqiqa kechikish bilan yuborildi`);
+        }, randomDelay);
       }
 
     } catch (error) {
@@ -160,23 +194,58 @@ class RSSAutoPoster {
   }
 
   private extractImageUrl(item: any): string | null {
-    // RSS dan rasm URL ni topish
-    if (item.enclosure && item.enclosure.url) {
+    // RSS dan rasm URL ni topish (eng yaxshi sifatli rasmni tanlash)
+    
+    // 1. Enclosure (podcast yoki media fayllari uchun)
+    if (item.enclosure && item.enclosure.url && this.isImageUrl(item.enclosure.url)) {
       return item.enclosure.url;
     }
     
+    // 2. Media thumbnail (RSS media namespace)
     if (item['media:thumbnail'] && item['media:thumbnail']['$'] && item['media:thumbnail']['$'].url) {
       return item['media:thumbnail']['$'].url;
     }
 
+    // 3. Media content (RSS media namespace)
+    if (item['media:content'] && item['media:content']['$'] && item['media:content']['$'].url && this.isImageUrl(item['media:content']['$'].url)) {
+      return item['media:content']['$'].url;
+    }
+
+    // 4. Content ichidan img tagini topish
     if (item.content) {
-      const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/);
-      if (imgMatch) {
+      const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/i);
+      if (imgMatch && imgMatch[1]) {
         return imgMatch[1];
       }
     }
 
+    // 5. Description ichidan img tagini topish
+    if (item.description) {
+      const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/i);
+      if (imgMatch && imgMatch[1]) {
+        return imgMatch[1];
+      }
+    }
+
+    // 6. Summary ichidan img tagini topish
+    if (item.summary) {
+      const imgMatch = item.summary.match(/<img[^>]+src="([^">]+)"/i);
+      if (imgMatch && imgMatch[1]) {
+        return imgMatch[1];
+      }
+    }
+
+    console.log(`⚠️ Rasm topilmadi: ${item.title?.substring(0, 50)}...`);
     return null;
+  }
+
+  private isImageUrl(url: string): boolean {
+    if (!url) return false;
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+    const lowercaseUrl = url.toLowerCase();
+    return imageExtensions.some(ext => lowercaseUrl.includes(ext)) || 
+           lowercaseUrl.includes('image') || 
+           lowercaseUrl.includes('photo');
   }
 
   private async translateToUzbek(text: string): Promise<string> {

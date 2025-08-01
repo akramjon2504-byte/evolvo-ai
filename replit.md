@@ -63,7 +63,9 @@ Comprehensive admin interface with authentication:
 - **Email Marketing**: Complete automation system with 30-day templates and OpenAI personalization
 - **Telegram AI Assistant**: Professional AI customer service bot (@vertextestai_bot) with intelligent responses
 - **Security**: Protected routes with localStorage-based auth
-- **RSS Integration**: Manual RSS sync functionality for automated content generation
+- **RSS Integration**: Automated RSS sync with daily limits (max 10 posts/day) and hourly scheduling
+- **Telegram Auto-Posting**: Blog posts automatically sent to @evolvo_ai channel with 1-hour random delays
+- **Image Optimization**: RSS images automatically extracted and used from original sources
 
 ### 2025 Innovation Features
 Latest web technologies and cutting-edge features:
@@ -104,6 +106,8 @@ RESTful API endpoints under `/api/`:
 - `GET /api/admin/telegram-stats` - Telegram AI assistant statistics
 - `POST /api/admin/send-telegram-test` - Test AI assistant responses
 - `POST /api/admin/send-telegram-marketing` - Manual marketing campaigns
+- `POST /api/admin/send-telegram-blog` - Send individual blog post to channel
+- `POST /api/admin/send-latest-blogs` - Send latest 3 blog posts to channel
 
 ### Internationalization
 - Three-language support: Uzbek (default), Russian, English

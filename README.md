@@ -1,19 +1,31 @@
 # EvolvoAI
 
-Zamonaviy AI asosidagi veb-ilova
+Zamonaviy AI asosidagi veb-ilova - kontent yaratish, marketing va avtomatlashtirish uchun to'liq yechim.
+
+## Xususiyatlar
+
+- 🤖 AI asosidagi kontent yaratish
+- 📧 Email marketing avtomatizatsiyasi
+- 📱 Telegram bot integratsiyasi
+- 📊 RSS feed boshqaruvi
+- 🗓️ Avtomatik post rejalashtirish
+- 🔍 SEO optimizatsiyasi va sitemap yaratish
 
 ## Texnologiyalar
 
-- **Frontend**: React, TypeScript, TailwindCSS
-- **Backend**: Node.js, Express
+- **Frontend**: React, TypeScript, TailwindCSS, Vite
+- **Backend**: Node.js, Express, TypeScript
 - **Ma'lumotlar bazasi**: PostgreSQL (Neon.tech)
-- **Boshqa**: TanStack Query, Drizzle ORM
+- **ORM**: Drizzle ORM
+- **State Management**: TanStack Query
+- **UI Components**: Radix UI
+- **Styling**: TailwindCSS + shadcn/ui
 
 ## O'rnatish
 
 1. Repozitoriyani klonlang:
    ```bash
-   git clone https://github.com/sizning-foydalanuvchi/evolvo-ai.git
+   git clone https://github.com/akramjon2504-byte/evolvo-ai.git
    cd evolvo-ai
    ```
 
@@ -30,7 +42,7 @@ Zamonaviy AI asosidagi veb-ilova
 
 4. Ma'lumotlar bazasini sozlang:
    ```bash
-   npx drizzle-kit push:pg
+   npm run db:push
    ```
 
 5. Dasturni ishga tushiring:
